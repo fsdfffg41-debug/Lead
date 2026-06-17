@@ -3,250 +3,268 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MapLeads Pricing - Simple, Transparent Plans</title>
+<title>MapLeads Pricing — Simple, Transparent Plans</title>
+<meta name="description" content="Start free. Scale as you grow. MapLeads pricing plans for freelancers, agencies, and enterprises." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #fff;
-    color: #0f0f0f;
-    line-height: 1.6;
-  }
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #f0f0f0;
-    padding: 0 5vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #0f0f0f;
-    text-decoration: none;
-  }
-  .logo-dot { color: #2563eb; }
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    text-decoration: none;
-    color: #555;
-    font-size: 14px;
-    transition: color .2s;
-  }
-  .nav-links a:hover { color: #0f0f0f; }
-  section { padding: 100px 5vw; }
-  .inner { max-width: 1200px; margin: 0 auto; }
-  h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .subtitle { text-align: center; color: #666; font-size: 18px; margin-bottom: 60px; }
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 32px;
-    margin-bottom: 80px;
-  }
-  .price-card {
-    border: 1px solid #e5e5e5;
-    border-radius: 16px;
-    padding: 40px 32px;
-    background: #fff;
-    transition: all .2s;
-    position: relative;
-  }
-  .price-card:hover { border-color: #2563eb; box-shadow: 0 20px 60px rgba(37,99,235,0.08); }
-  .price-card.featured {
-    border: 2px solid #2563eb;
-    transform: scale(1.05);
-  }
-  .featured-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2563eb;
-    color: #fff;
-    padding: 4px 16px;
-    border-radius: 100px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-  .plan-name { font-size: 13px; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 16px; }
-  .plan-price {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .plan-price sup { font-size: 24px; }
-  .plan-period { font-size: 13px; color: #888; margin-bottom: 32px; }
-  .plan-features { list-style: none; margin-bottom: 32px; }
-  .plan-features li {
-    padding: 12px 0;
-    font-size: 14px;
-    color: #666;
-    border-bottom: 1px solid #f0f0f0;
-    display: flex;
-    align-items: center;
-  }
-  .plan-features li::before { content: '✓'; color: #2563eb; font-weight: 700; margin-right: 12px; }
-  .btn-primary {
-    width: 100%;
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .2s;
-  }
-  .btn-primary:hover { background: #1d4ed8; }
-  .btn-secondary {
-    width: 100%;
-    background: #fff;
-    color: #0f0f0f;
-    border: 1.5px solid #e5e5e5;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .btn-secondary:hover { border-color: #2563eb; color: #2563eb; }
-  .faq { margin-top: 80px; }
-  .faq h2 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; margin-bottom: 40px; text-align: center; }
-  .faq-item {
-    background: #f8f9fc;
-    padding: 24px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-  .faq-q { font-weight: 600; margin-bottom: 12px; cursor: pointer; }
-  .faq-a { font-size: 14px; color: #666; }
-  .footer { text-align: center; color: #888; font-size: 14px; padding: 40px; border-top: 1px solid #f0f0f0; }
-  @media (max-width: 768px) {
-    .pricing-grid { grid-template-columns: 1fr; }
-    .price-card.featured { transform: scale(1); }
-    h1 { font-size: 32px; }
-  }
+.page-hero { padding: 88px 5vw 64px; text-align: center; }
+.page-hero h1 { font-family:'Syne',sans-serif; font-weight:800; letter-spacing:-0.03em; margin-bottom:16px; }
+.page-hero p  { font-size:18px; max-width:520px; margin:0 auto 40px; }
+
+.toggle-wrap { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:56px; font-size:14px; font-weight:600; color:var(--gray-500); }
+.toggle { width:44px; height:24px; background:var(--blue); border-radius:100px; position:relative; cursor:pointer; transition:background .2s; }
+.toggle-knob { position:absolute; top:2px; left:2px; width:20px; height:20px; background:#fff; border-radius:50%; transition:transform .2s; box-shadow:var(--shadow-sm); }
+.toggle.off { background:var(--gray-300); }
+.save-badge { background:var(--green-light); color:var(--green); font-size:11px; font-weight:700; padding:3px 10px; border-radius:100px; }
+
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1100px; margin:0 auto; padding:0 5vw 96px; }
+.plan { border:1.5px solid var(--gray-100); border-radius:var(--radius-xl); padding:36px; position:relative; transition:var(--transition); }
+.plan:hover { border-color:var(--blue); box-shadow:var(--shadow); }
+.plan.pop { border-color:var(--blue); box-shadow:0 0 0 4px rgba(37,99,235,.07); }
+.plan-badge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:var(--blue); color:#fff; font-size:11px; font-weight:700; padding:4px 16px; border-radius:100px; white-space:nowrap; letter-spacing:.04em; text-transform:uppercase; }
+.plan-name { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--gray-500); margin-bottom:16px; }
+.plan-price .amt { font-family:'Syne',sans-serif; font-size:52px; font-weight:800; letter-spacing:-0.03em; }
+.plan-price .cur { font-size:24px; font-weight:700; vertical-align:top; margin-top:14px; display:inline-block; }
+.plan-period { font-size:13px; color:var(--gray-500); margin-bottom:28px; }
+.plan-feats { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+.plan-feats li { font-size:14px; color:var(--gray-700); display:flex; align-items:center; gap:9px; padding-bottom:10px; border-bottom:1px solid var(--gray-100); }
+.plan-feats li:last-child { border-bottom:none; padding-bottom:0; }
+.plan-feats li::before { content:'✓'; color:var(--blue); font-weight:700; flex-shrink:0; }
+
+.faq-section { background:var(--gray-50); padding:80px 5vw; }
+.faq-inner { max-width:720px; margin:0 auto; }
+.faq-inner h2 { font-family:'Syne',sans-serif; font-size:36px; font-weight:800; text-align:center; margin-bottom:48px; }
+.faq-item { border:1px solid var(--gray-100); border-radius:var(--radius); background:#fff; margin-bottom:12px; overflow:hidden; }
+.faq-q { padding:20px 24px; font-size:15px; font-weight:600; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.faq-q::after { content:'+'; font-size:20px; color:var(--blue); font-weight:400; transition:transform .2s; }
+.faq-item.open .faq-q::after { transform:rotate(45deg); }
+.faq-a { font-size:14px; color:var(--gray-500); line-height:1.75; padding:0 24px 20px; display:none; }
+.faq-item.open .faq-a { display:block; }
+
+.compare-section { padding:80px 5vw; }
+.compare-inner { max-width:900px; margin:0 auto; }
+.compare-inner h2 { font-family:'Syne',sans-serif; font-weight:800; text-align:center; margin-bottom:40px; }
+.compare-table { width:100%; border-collapse:collapse; }
+.compare-table th { padding:14px 16px; text-align:center; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; background:var(--gray-50); }
+.compare-table th:first-child { text-align:left; }
+.compare-table td { padding:14px 16px; text-align:center; font-size:14px; border-bottom:1px solid var(--gray-100); }
+.compare-table td:first-child { text-align:left; font-weight:500; color:var(--gray-700); }
+.compare-table tr:hover td { background:var(--gray-50); }
+.check { color:var(--blue); font-weight:700; }
+.cross { color:var(--gray-300); }
+
+@media(max-width:900px) { .pricing-grid { grid-template-columns:1fr; max-width:480px; } }
+@media(max-width:640px) { .compare-table { font-size:12px; } .compare-table th,.compare-table td { padding:10px 8px; } }
 </style>
 </head>
 <body>
-
-<nav>
-  <a href="/" class="logo">MapLeads<span class="logo-dot">.</span>io</a>
-  <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/docs.html">Docs</a></li>
-    <li><a href="/pricing.html">Pricing</a></li>
-    <li><a href="/blog.html">Blog</a></li>
-    <li><a href="/admin.html">Admin</a></li>
-  </ul>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+      MapLeads<span class="dot">.</span>io
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="pricing.html" style="color:var(--blue);font-weight:600;">Pricing</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="admin.html" class="nav-cta">Dashboard →</a></li>
+    </ul>
+    <button class="nav-burger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
 </nav>
 
-<section>
-  <div class="inner">
-    <h1>Simple Pricing, No Surprises</h1>
-    <p class="subtitle">Start free. Scale as you grow. Cancel anytime.</p>
-    
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price">$<span>0</span></div>
-        <div class="plan-period">Forever free</div>
-        <ul class="plan-features">
-          <li>500 results/month</li>
-          <li>5 countries</li>
-          <li>CSV export</li>
-          <li>Phone + address</li>
-          <li>Website status filter</li>
-          <li>Community support</li>
-        </ul>
-        <button class="btn-secondary">Get started free</button>
-      </div>
+<div class="page-hero">
+  <div class="eyebrow">Pricing</div>
+  <h1>Simple pricing, no surprises</h1>
+  <p>Start free. Scale as you grow. Cancel anytime — no contracts, no hidden fees.</p>
+  <div class="toggle-wrap">
+    <span>Monthly</span>
+    <div class="toggle" id="billingToggle" onclick="toggleBilling()"><div class="toggle-knob" id="toggleKnob"></div></div>
+    <span>Annual <span class="save-badge">Save 20%</span></span>
+  </div>
+</div>
 
-      <div class="price-card featured">
-        <div class="featured-badge">MOST POPULAR</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">$<span>49</span></div>
-        <div class="plan-period">per month, billed monthly</div>
-        <ul class="plan-features">
-          <li>25,000 results/month</li>
-          <li>All 30+ countries</li>
-          <li>CSV + JSON export</li>
-          <li>Full business details</li>
-          <li>REST API access</li>
-          <li>Webhook notifications</li>
-          <li>24-hour email support</li>
-        </ul>
-        <button class="btn-primary">Start free trial</button>
-      </div>
+<div class="pricing-grid">
+  <div class="plan">
+    <div class="plan-name">Starter</div>
+    <div class="plan-price"><span class="cur">$</span><span class="amt" id="p1">0</span></div>
+    <div class="plan-period">Forever free</div>
+    <ul class="plan-feats">
+      <li>500 results / month</li>
+      <li>5 countries</li>
+      <li>CSV export</li>
+      <li>Phone + address data</li>
+      <li>No-website filter</li>
+      <li>Community support</li>
+    </ul>
+    <button class="btn btn-outline btn-full" onclick="openModal('signup')">Get started free</button>
+  </div>
+  <div class="plan pop">
+    <div class="plan-badge">Most popular</div>
+    <div class="plan-name">Pro</div>
+    <div class="plan-price"><span class="cur">$</span><span class="amt" id="p2">49</span></div>
+    <div class="plan-period" id="pp2">per month · cancel anytime</div>
+    <ul class="plan-feats">
+      <li>25,000 results / month</li>
+      <li>All 40+ countries</li>
+      <li>CSV + JSON export</li>
+      <li>Full business details</li>
+      <li>REST API access</li>
+      <li>Email discovery</li>
+      <li>Webhook notifications</li>
+      <li>24h email support</li>
+    </ul>
+    <button class="btn btn-blue btn-full" onclick="openModal('signup')">Start 7-day free trial →</button>
+  </div>
+  <div class="plan">
+    <div class="plan-name">Agency</div>
+    <div class="plan-price"><span class="cur">$</span><span class="amt" id="p3">199</span></div>
+    <div class="plan-period" id="pp3">per month · cancel anytime</div>
+    <ul class="plan-feats">
+      <li>250,000 results / month</li>
+      <li>All 40+ countries</li>
+      <li>Bulk job scheduler</li>
+      <li>Priority API limits</li>
+      <li>White-label export</li>
+      <li>5 sub-accounts / seats</li>
+      <li>Dedicated support</li>
+      <li>SLA guarantee</li>
+    </ul>
+    <button class="btn btn-outline btn-full" onclick="openModal('contact')">Contact sales</button>
+  </div>
+</div>
 
-      <div class="price-card">
-        <div class="plan-name">Agency</div>
-        <div class="plan-price">$<span>199</span></div>
-        <div class="plan-period">per month, billed monthly</div>
-        <ul class="plan-features">
-          <li>250,000 results/month</li>
-          <li>All 30+ countries</li>
-          <li>Bulk job scheduler</li>
-          <li>Priority API limits</li>
-          <li>White-label export</li>
-          <li>Sub-accounts (5 seats)</li>
-          <li>Dedicated support</li>
-        </ul>
-        <button class="btn-secondary">Contact sales</button>
-      </div>
+<section class="compare-section">
+  <div class="compare-inner">
+    <h2>Full feature comparison</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Starter</th>
+          <th>Pro</th>
+          <th>Agency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Results per month</td><td>500</td><td>25,000</td><td>250,000</td></tr>
+        <tr><td>Countries</td><td>5</td><td>40+</td><td>40+</td></tr>
+        <tr><td>No-website filter</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Phone number data</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Email discovery</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>REST API access</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>CSV export</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>JSON export</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Excel export</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Webhook notifications</td><td class="cross">—</td><td class="check">✓</td><td class="check">✓</td></tr>
+        <tr><td>Bulk job scheduler</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td></tr>
+        <tr><td>White-label export</td><td class="cross">—</td><td class="cross">—</td><td class="check">✓</td></tr>
+        <tr><td>Sub-accounts / seats</td><td class="cross">—</td><td class="cross">—</td><td>5 seats</td></tr>
+        <tr><td>Support</td><td>Community</td><td>24h email</td><td>Dedicated</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="faq-inner">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I upgrade or downgrade my plan?</div>
+      <div class="faq-a">Yes — change your plan anytime from your dashboard. Changes take effect at the start of your next billing cycle. Upgrades are prorated immediately.</div>
     </div>
-
-    <div class="faq">
-      <h2>Frequently Asked Questions</h2>
-      <div class="faq-item">
-        <div class="faq-q">❓ Can I upgrade or downgrade my plan?</div>
-        <div class="faq-a">Yes! Change your plan anytime from your dashboard. Changes take effect at the next billing cycle.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">❓ Is there a free trial for Pro and Agency?</div>
-        <div class="faq-a">Yes! 7 days free for Pro. Agency plans include a custom trial period. No credit card required.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">❓ What happens when I exceed my limits?</div>
-        <div class="faq-a">We'll notify you before you hit your limit. You can upgrade anytime or purchase additional credits.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">❓ Do you offer annual billing?</div>
-        <div class="faq-a">Yes! Annual plans get 20% discount. Contact our sales team for custom arrangements.</div>
-      </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is there a free trial for Pro and Agency?</div>
+      <div class="faq-a">Pro includes a 7-day free trial with no credit card required. Agency plans include a custom trial period — contact sales to discuss.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What happens when I exceed my monthly limits?</div>
+      <div class="faq-a">We'll notify you by email when you reach 80% of your limit. You can upgrade anytime, or purchase additional credits as a top-up without changing your plan.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do you offer annual billing?</div>
+      <div class="faq-a">Yes. Switch to annual billing in your dashboard to save 20% — that's over 2 months free. Toggle the switch above to see annual pricing.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I need a Google Maps API key?</div>
+      <div class="faq-a">No — that's the whole point of MapLeads. We handle all the infrastructure. You just make requests to our API and get clean data back. No Google credentials required.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is the data GDPR-compliant?</div>
+      <div class="faq-a">MapLeads only indexes publicly listed business data (not personal data). We recommend users comply with local regulations for their outreach campaigns. See our Privacy Policy for details.</div>
     </div>
   </div>
 </section>
 
-<div class="footer">
-  <p>&copy; 2026 MapLeads. Transparent pricing for everyone. Questions? <a href="/contact.html" style="color: #2563eb;">Contact us</a></p>
+<section class="cta-banner" style="padding:80px 5vw;background:var(--black);text-align:center;">
+  <h2 style="font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:16px;">Start finding leads today</h2>
+  <p style="color:rgba(255,255,255,.55);font-size:17px;margin-bottom:32px;">Free plan — no credit card — first scrape in under 5 minutes.</p>
+  <button class="btn btn-blue" style="font-size:16px;padding:16px 40px;" onclick="openModal('signup')">Get started free →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px;margin-bottom:16px;">MapLeads.io</a>
+        <p>Find offline businesses ready for digital services across 40+ countries.</p>
+      </div>
+      <div class="footer-col"><h5>Product</h5><ul><li><a href="pricing.html">Pricing</a></li><li><a href="docs.html">API Docs</a></li><li><a href="blog.html">Blog</a></li></ul></div>
+      <div class="footer-col"><h5>Company</h5><ul><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h5>Legal</h5><ul><li><a href="#">Terms</a></li><li><a href="#">Privacy</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 MapLeads.io</span></div>
+  </div>
+</footer>
+
+<div id="signupModal" class="modal" onclick="if(event.target===this)closeModal('signup')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head"><h3>Create your free account</h3><button class="modal-close" onclick="closeModal('signup')">✕</button></div>
+    <form onsubmit="handleSignup(event)">
+      <div class="field"><label>Full name</label><input type="text" placeholder="Your name" required /></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@company.com" required /></div>
+      <button type="submit" class="form-submit">Create free account →</button>
+      <div class="toast" id="signupToast">✓ Account created! Check your email.</div>
+    </form>
+  </div>
+</div>
+<div id="contactModal" class="modal" onclick="if(event.target===this)closeModal('contact')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head"><h3>Contact sales</h3><button class="modal-close" onclick="closeModal('contact')">✕</button></div>
+    <form onsubmit="handleContact(event)">
+      <div class="field"><label>Name</label><input type="text" placeholder="Your name" required /></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@company.com" required /></div>
+      <div class="field"><label>Message</label><textarea placeholder="Tell us about your needs..." required></textarea></div>
+      <button type="submit" class="form-submit">Send message →</button>
+      <div class="toast" id="contactToast">✓ Sent! We'll reply within 24 hours.</div>
+    </form>
+  </div>
 </div>
 
+<script src="main.js"></script>
+<script>
+  let annual = false;
+  function toggleBilling() {
+    annual = !annual;
+    document.getElementById('billingToggle').classList.toggle('off', !annual);
+    document.getElementById('toggleKnob').style.transform = annual ? 'translateX(20px)' : 'translateX(0)';
+    document.getElementById('p2').textContent = annual ? '39' : '49';
+    document.getElementById('p3').textContent = annual ? '159' : '199';
+    document.getElementById('pp2').textContent = annual ? 'per month · billed annually' : 'per month · cancel anytime';
+    document.getElementById('pp3').textContent = annual ? 'per month · billed annually' : 'per month · cancel anytime';
+  }
+  function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+  function openModal(id) { document.getElementById(id+'Modal').classList.add('show'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id+'Modal').classList.remove('show'); document.body.style.overflow=''; }
+  function handleSignup(e) { e.preventDefault(); document.getElementById('signupToast').classList.add('show'); setTimeout(()=>closeModal('signup'),2200); }
+  function handleContact(e) { e.preventDefault(); document.getElementById('contactToast').classList.add('show'); setTimeout(()=>closeModal('contact'),2200); }
+</script>
 </body>
 </html>
