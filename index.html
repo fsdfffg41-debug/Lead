@@ -72,6 +72,8 @@
     font-size: 14px !important;
     font-weight: 600 !important;
     transition: background .2s !important;
+    cursor: pointer;
+    border: none;
   }
   .nav-cta:hover { background: #2563eb !important; color: #fff !important; }
 
@@ -98,6 +100,7 @@
     margin-bottom: 24px;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    animation: fadeInDown 0.6s ease-out;
   }
   .hero-badge span { width: 6px; height: 6px; background: #2563eb; border-radius: 50%; display: inline-block; }
   h1 {
@@ -108,6 +111,7 @@
     letter-spacing: -0.03em;
     color: #0f0f0f;
     margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease-out 0.1s both;
   }
   h1 em {
     font-style: normal;
@@ -119,8 +123,9 @@
     line-height: 1.7;
     margin-bottom: 36px;
     max-width: 480px;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
   }
-  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeInUp 0.6s ease-out 0.3s both; }
   .btn-primary {
     background: #0f0f0f;
     color: #fff;
@@ -161,6 +166,7 @@
     border-radius: 20px;
     padding: 28px;
     position: relative;
+    animation: fadeInRight 0.8s ease-out;
   }
   .demo-header {
     display: flex;
@@ -435,7 +441,7 @@
     font-size: 14px;
     color: #888;
   }
-  .more-countries strong { color: #2563eb; }
+  .more-countries strong { color: #2563eb; cursor: pointer; }
 
   /* API DOCS PREVIEW */
   .api-section { background: #f8f9fc; }
@@ -556,6 +562,84 @@
   .cta-section .btn-primary { background: #2563eb; font-size: 16px; padding: 16px 36px; }
   .cta-section .btn-primary:hover { background: #1d4ed8; }
 
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-out;
+  }
+  .modal.show { display: flex; align-items: center; justify-content: center; }
+  .modal-content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease-out;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .modal-header h3 { font-size: 24px; font-weight: 700; }
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+  }
+  .close-btn:hover { color: #0f0f0f; }
+  .form-group {
+    margin-bottom: 16px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #0f0f0f;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+  }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 16px;
+  }
+  .form-submit:hover { background: #1d4ed8; }
+
   /* FOOTER */
   footer {
     border-top: 1px solid #f0f0f0;
@@ -574,7 +658,7 @@
   .footer-brand p { font-size: 13px; color: #888; margin-top: 12px; max-width: 240px; line-height: 1.7; }
   .footer-col h5 { font-size: 12px; font-weight: 700; color: #0f0f0f; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
   .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-col ul li a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; }
+  .footer-col ul li a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; cursor: pointer; }
   .footer-col ul li a:hover { color: #2563eb; }
   .footer-bottom {
     border-top: 1px solid #f0f0f0;
@@ -604,6 +688,38 @@
     max-width: 1200px;
     margin: 0 auto;
   }
+  .success-message {
+    display: none;
+    background: #d1fae5;
+    color: #065f46;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 14px;
+    animation: fadeIn 0.3s ease-out;
+  }
+  .success-message.show { display: block; }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
   @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; gap: 40px; padding: 60px 5vw; }
@@ -613,6 +729,7 @@
     .nav-links { display: none; }
     .stats-inner { justify-content: center; }
     .footer-top { grid-template-columns: 1fr; }
+    .modal-content { width: 95%; padding: 30px 20px; }
   }
 </style>
 </head>
@@ -622,7 +739,7 @@
 <nav>
   <a href="#" class="logo">
     <div class="logo-icon">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg>
     </div>
     MapLeads<span class="logo-dot">.</span>io
   </a>
@@ -631,7 +748,7 @@
     <li><a href="#countries">Countries</a></li>
     <li><a href="#api">API</a></li>
     <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#pricing" class="nav-cta">Start free</a></li>
+    <li><button class="nav-cta" onclick="openModal('signup')">Start free</button></li>
   </ul>
 </nav>
 
@@ -641,9 +758,9 @@
     <div>
       <div class="hero-badge"><span></span> Live Google Maps data</div>
       <h1>Find businesses <em>without websites</em> in any country</h1>
-      <p class="hero-sub">MapLeads scrapes Google Maps in real time to surface offline businesses — complete with phone numbers, addresses, categories, and ratings — across 30+ countries. Built for developers and growth teams.</p>
+      <p class="hero-sub">MapLeads scrapes Google Maps in real time to surface offline businesses — complete with phone numbers, addresses, categories, and ratings — across 30+ countries. Build your outreach list in seconds.</p>
       <div class="hero-actions">
-        <a href="#pricing" class="btn-primary">Start scraping free →</a>
+        <button class="btn-primary" onclick="openModal('signup')">Start scraping free →</button>
         <a href="#api" class="btn-secondary">View API docs</a>
       </div>
     </div>
@@ -657,10 +774,10 @@
         <input type="text" value="restaurants Berlin, Germany" readonly />
       </div>
       <div class="filters-row">
-        <div class="filter-chip active">No website</div>
-        <div class="filter-chip">Has phone</div>
-        <div class="filter-chip">4★+</div>
-        <div class="filter-chip">Open now</div>
+        <div class="filter-chip active" onclick="toggleFilter(this)">No website</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">Has phone</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">4★+</div>
+        <div class="filter-chip" onclick="toggleFilter(this)">Open now</div>
       </div>
       <div class="result-cards">
         <div class="result-card">
@@ -694,7 +811,7 @@
           </div>
         </div>
       </div>
-      <button class="demo-run-btn">⚡ Run scrape — export 500 results</button>
+      <button class="demo-run-btn" onclick="runDemo()">⚡ Run scrape — export 500 results</button>
       <p class="demo-stat">Found <strong>2,847 businesses</strong> without websites in Berlin</p>
     </div>
   </div>
@@ -819,13 +936,7 @@
     <span class="json-key">"has_website"</span>: <span class="json-bool">false</span>,
     <span class="json-key">"website_url"</span>: <span class="json-bool">null</span>,
     <span class="json-key">"lat"</span>: <span class="json-num">52.5061</span>,
-    <span class="json-key">"lng"</span>: <span class="json-num">13.3954</span>,
-    <span class="json-key">"place_id"</span>: <span class="json-str">"ChIJ_maps_id_here"</span>,
-    <span class="json-key">"hours"</span>: {
-      <span class="json-key">"monday"</span>: <span class="json-str">"11:00–22:00"</span>,
-      <span class="json-key">"tuesday"</span>: <span class="json-str">"11:00–22:00"</span>
-    },
-    <span class="json-key">"scraped_at"</span>: <span class="json-str">"2026-06-17T14:23:00Z"</span>
+    <span class="json-key">"lng"</span>: <span class="json-num">13.3954</span>
   }
 ]</pre>
         </div>
@@ -858,7 +969,7 @@
       <div class="country-card"><span class="country-flag">🇮🇳</span><div class="country-name">India</div><div class="country-count">9.8M businesses</div></div>
       <div class="country-card"><span class="country-flag">🇿🇦</span><div class="country-name">South Africa</div><div class="country-count">820K businesses</div></div>
     </div>
-    <p class="more-countries">+ 14 more countries. <strong>Request a country</strong> and we'll add it within 48 hours.</p>
+    <p class="more-countries">+ 14 more countries. <a href="javascript:openModal('request')" style="text-decoration: none; color: inherit;"><strong>Request a country</strong></a> and we'll add it within 48 hours.</p>
   </div>
 </section>
 
@@ -915,17 +1026,13 @@
   <span class="json-str">?query=restaurants</span>
   <span class="json-str">&location=Berlin%2C+Germany</span>
   <span class="json-str">&filter=no_website</span>
-  <span class="json-str">&has_phone=true</span>
   <span class="json-str">&limit=100"</span> \
-  -H <span class="json-str">"Authorization: Bearer YOUR_API_KEY"</span> \
-  -H <span class="json-str">"Content-Type: application/json"</span>
+  -H <span class="json-str">"Authorization: Bearer YOUR_API_KEY"</span>
 
 <span class="json-key"># Response</span>
 {
   <span class="json-key">"status"</span>: <span class="json-str">"success"</span>,
   <span class="json-key">"total"</span>: <span class="json-num">2847</span>,
-  <span class="json-key">"returned"</span>: <span class="json-num">100</span>,
-  <span class="json-key">"page"</span>: <span class="json-num">1</span>,
   <span class="json-key">"results"</span>: [ ... ]
 }</pre>
       </div>
@@ -952,7 +1059,7 @@
           <li>Website status filter</li>
           <li>Community support</li>
         </ul>
-        <a href="#" class="btn-secondary" style="width: 100%; justify-content: center; display: flex;">Get started free</a>
+        <button class="btn-secondary" style="width: 100%; justify-content: center; display: flex;" onclick="openModal('signup')">Get started free</button>
       </div>
       <div class="price-card featured">
         <div class="featured-badge">MOST POPULAR</div>
@@ -968,7 +1075,7 @@
           <li>Webhook notifications</li>
           <li>Email support (24h)</li>
         </ul>
-        <a href="#" class="btn-primary" style="width: 100%; justify-content: center; display: flex;">Start 7-day free trial</a>
+        <button class="btn-primary" style="width: 100%; justify-content: center; display: flex;" onclick="openModal('signup')">Start 7-day free trial</button>
       </div>
       <div class="price-card">
         <div class="plan-name">Agency</div>
@@ -982,9 +1089,8 @@
           <li>White-label export</li>
           <li>Sub-accounts (5 seats)</li>
           <li>Dedicated support</li>
-          <li>Custom webhook logic</li>
         </ul>
-        <a href="#" class="btn-secondary" style="width: 100%; justify-content: center; display: flex;">Contact sales</a>
+        <button class="btn-secondary" style="width: 100%; justify-content: center; display: flex;" onclick="openModal('contact')">Contact sales</button>
       </div>
     </div>
   </div>
@@ -1000,34 +1106,34 @@
     <div class="testimonials-grid">
       <div class="testimonial-card">
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"We built our entire client acquisition pipeline on MapLeads. Found 4,000 restaurants in Germany with no website in one afternoon. Closed 12 new web design clients that month."</p>
+        <p class="testimonial-text">"MapLeads saved us 40 hours per month on prospect research. The phone number accuracy is incredible—actually calls that go through."</p>
         <div class="reviewer">
-          <div class="reviewer-avatar">MK</div>
+          <div class="reviewer-avatar">AC</div>
           <div>
-            <div class="reviewer-name">Marcus Keller</div>
-            <div class="reviewer-role">Founder, WebWerk Agency · Berlin</div>
+            <div class="reviewer-name">Alex Chen</div>
+            <div class="reviewer-role">Growth Lead, Cold Outreach Pro</div>
           </div>
         </div>
       </div>
       <div class="testimonial-card">
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"The API is exactly what I needed to power my SaaS outreach tool. Clean JSON, reliable uptime, and the no-website filter is pure gold for selling web services."</p>
+        <p class="testimonial-text">"We integrated MapLeads into our CRM in one afternoon. The API documentation is thorough and the support team actually responds."</p>
         <div class="reviewer">
-          <div class="reviewer-avatar">SP</div>
+          <div class="reviewer-avatar">SM</div>
           <div>
-            <div class="reviewer-name">Sarah Patel</div>
-            <div class="reviewer-role">Developer, LeadFlow · London</div>
+            <div class="reviewer-name">Sarah Martinez</div>
+            <div class="reviewer-role">CTO, WebsiteFlow Inc</div>
           </div>
         </div>
       </div>
       <div class="testimonial-card">
         <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"I used MapLeads to find 800 plumbers in France without websites. Sent them all a cold email offering web design. Made back the subscription cost in day one."</p>
+        <p class="testimonial-text">"The 'no website' filter is a game-changer. We've landed 12 new clients just by targeting businesses that don't have an online presence yet."</p>
         <div class="reviewer">
-          <div class="reviewer-avatar">LB</div>
+          <div class="reviewer-avatar">JK</div>
           <div>
-            <div class="reviewer-name">Lucas Bernard</div>
-            <div class="reviewer-role">Freelance Web Designer · Lyon</div>
+            <div class="reviewer-name">James Kim</div>
+            <div class="reviewer-role">Founder, Digital Agency Co</div>
           </div>
         </div>
       </div>
@@ -1036,62 +1142,189 @@
 </section>
 
 <!-- CTA -->
-<div class="cta-section">
-  <h2>Start finding leads today</h2>
-  <p>500 results free. No credit card required. Export in under a minute.</p>
-  <a href="#pricing" class="btn-primary" style="margin: 0 auto; display: inline-flex;">Create free account →</a>
-</div>
+<section class="cta-section">
+  <h2>Ready to find your next 1,000 leads?</h2>
+  <p>Start free. No credit card required. Scrape your first batch of businesses in under 5 minutes.</p>
+  <button class="btn-primary" onclick="openModal('signup')">Get started now →</button>
+</section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="#" class="logo" style="font-size: 18px;">
-          <div class="logo-icon" style="width: 28px; height: 28px;">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg>
           </div>
-          MapLeads<span class="logo-dot">.</span>io
+          MapLeads
         </a>
-        <p>Real-time Google Maps scraping to find businesses without websites. Built for developers and growth agencies.</p>
+        <p>Find businesses without websites across 30+ countries. Scrape Google Maps data in real-time with 99%+ accuracy.</p>
       </div>
       <div class="footer-col">
         <h5>Product</h5>
         <ul>
-          <li><a href="#">How it works</a></li>
-          <li><a href="#">API docs</a></li>
-          <li><a href="#">Countries</a></li>
-          <li><a href="#">Pricing</a></li>
-          <li><a href="#">Changelog</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Developers</h5>
-        <ul>
-          <li><a href="#">REST API reference</a></li>
-          <li><a href="#">Node.js SDK</a></li>
-          <li><a href="#">Python SDK</a></li>
-          <li><a href="#">Webhooks guide</a></li>
-          <li><a href="#">Status page</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#api">API docs</a></li>
+          <li><a href="javascript:openModal('request')">Request feature</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Company</h5>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Privacy policy</a></li>
-          <li><a href="#">Terms of service</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="javascript:alert('About page')">About</a></li>
+          <li><a href="javascript:alert('Blog page')">Blog</a></li>
+          <li><a href="javascript:openModal('contact')">Contact</a></li>
+          <li><a href="javascript:alert('Careers - Coming soon!')">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="javascript:alert('Terms of Service')">Terms</a></li>
+          <li><a href="javascript:alert('Privacy Policy')">Privacy</a></li>
+          <li><a href="javascript:alert('Cookie Policy')">Cookies</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 MapLeads.io — All rights reserved</span>
-      <span>Made with ♥ for developers worldwide</span>
+      <p>&copy; 2026 MapLeads. All rights reserved.</p>
     </div>
   </div>
 </footer>
+
+<!-- MODALS -->
+<div id="signupModal" class="modal" onclick="closeModalOnBackdrop(event, 'signup')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Get started with MapLeads</h3>
+      <button class="close-btn" onclick="closeModal('signup')">&times;</button>
+    </div>
+    <form onsubmit="handleSignup(event)">
+      <div class="form-group">
+        <label>Full name</label>
+        <input type="text" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label>Company (optional)</label>
+        <input type="text" placeholder="Your company">
+      </div>
+      <button type="submit" class="form-submit">Create free account</button>
+      <div class="success-message" id="signupSuccess">✓ Check your email to verify your account!</div>
+    </form>
+  </div>
+</div>
+
+<div id="contactModal" class="modal" onclick="closeModalOnBackdrop(event, 'contact')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Contact us</h3>
+      <button class="close-btn" onclick="closeModal('contact')">&times;</button>
+    </div>
+    <form onsubmit="handleContact(event)">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us more..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send message</button>
+      <div class="success-message" id="contactSuccess">✓ Message sent! We'll get back to you soon.</div>
+    </form>
+  </div>
+</div>
+
+<div id="requestModal" class="modal" onclick="closeModalOnBackdrop(event, 'request')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Request a country</h3>
+      <button class="close-btn" onclick="closeModal('request')">&times;</button>
+    </div>
+    <form onsubmit="handleRequest(event)">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label>Country name</label>
+        <input type="text" placeholder="e.g., Poland, Thailand" required>
+      </div>
+      <div class="form-group">
+        <label>Industry focus (optional)</label>
+        <input type="text" placeholder="e.g., restaurants, plumbers">
+      </div>
+      <button type="submit" class="form-submit">Submit request</button>
+      <div class="success-message" id="requestSuccess">✓ Thanks! We'll prioritize your request.</div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openModal(modalType) {
+    document.getElementById(modalType + 'Modal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(modalType) {
+    document.getElementById(modalType + 'Modal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+    const successMsg = document.getElementById(modalType + 'Success');
+    if (successMsg) successMsg.classList.remove('show');
+  }
+
+  function closeModalOnBackdrop(event, modalType) {
+    if (event.target.id === modalType + 'Modal') {
+      closeModal(modalType);
+    }
+  }
+
+  function handleSignup(e) {
+    e.preventDefault();
+    document.getElementById('signupSuccess').classList.add('show');
+    setTimeout(() => closeModal('signup'), 2000);
+  }
+
+  function handleContact(e) {
+    e.preventDefault();
+    document.getElementById('contactSuccess').classList.add('show');
+    setTimeout(() => closeModal('contact'), 2000);
+  }
+
+  function handleRequest(e) {
+    e.preventDefault();
+    document.getElementById('requestSuccess').classList.add('show');
+    setTimeout(() => closeModal('request'), 2000);
+  }
+
+  function toggleFilter(elem) {
+    elem.classList.toggle('active');
+  }
+
+  function runDemo() {
+    alert('Demo! In production, this would trigger a real scrape job.');
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href !== '#') {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
