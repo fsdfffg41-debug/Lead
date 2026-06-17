@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MapLeads — Find Businesses Without Websites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #ffffff;
+    color: #0f0f0f;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f0f0f;
+    text-decoration: none;
+  }
+  .logo-dot { color: #2563eb; }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: #2563eb;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 18px; height: 18px; fill: #fff; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #0f0f0f; }
+  .nav-cta {
+    background: #0f0f0f;
+    color: #fff !important;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    transition: background .2s !important;
+  }
+  .nav-cta:hover { background: #2563eb !important; color: #fff !important; }
+
+  /* HERO */
+  .hero {
+    padding: 100px 5vw 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: #2563eb; border-radius: 50%; display: inline-block; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 4.5vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0f0f0f;
+    margin-bottom: 20px;
+  }
+  h1 em {
+    font-style: normal;
+    color: #2563eb;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    background: #0f0f0f;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background .2s, transform .15s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+  .btn-secondary {
+    background: #fff;
+    color: #0f0f0f;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid #e5e5e5;
+    transition: border-color .2s, transform .15s;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: #2563eb; color: #2563eb; transform: translateY(-1px); }
+
+  /* HERO SEARCH DEMO */
+  .hero-demo {
+    background: #f8f9fc;
+    border: 1px solid #e8eaf0;
+    border-radius: 20px;
+    padding: 28px;
+    position: relative;
+  }
+  .demo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .demo-dots { display: flex; gap: 6px; }
+  .demo-dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .demo-dots span:nth-child(1) { background: #ff5f57; }
+  .demo-dots span:nth-child(2) { background: #febc2e; }
+  .demo-dots span:nth-child(3) { background: #28c840; }
+  .demo-title { font-size: 13px; color: #888; margin-left: auto; font-weight: 500; }
+  .search-box {
+    background: #fff;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .search-box input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #0f0f0f;
+    flex: 1;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+  }
+  .search-icon { color: #aaa; font-size: 16px; }
+  .filters-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #444;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .filter-chip.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+  .result-cards { display: flex; flex-direction: column; gap: 10px; }
+  .result-card {
+    background: #fff;
+    border: 1px solid #e8eaf0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    transition: border-color .2s, box-shadow .2s;
+    cursor: pointer;
+  }
+  .result-card:hover { border-color: #2563eb; box-shadow: 0 4px 20px rgba(37,99,235,0.08); }
+  .result-card .biz-name { font-size: 14px; font-weight: 600; color: #0f0f0f; margin-bottom: 3px; }
+  .result-card .biz-cat { font-size: 12px; color: #888; }
+  .result-card .biz-phone { font-size: 13px; color: #2563eb; font-weight: 500; text-align: right; }
+  .result-card .no-site {
+    display: inline-block;
+    background: #fef3cd;
+    color: #92610a;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .demo-run-btn {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    transition: background .2s;
+  }
+  .demo-run-btn:hover { background: #1d4ed8; }
+  .demo-stat {
+    margin-top: 14px;
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+  }
+  .demo-stat strong { color: #2563eb; }
+
+  /* STATS */
+  .stats-bar {
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 28px 5vw;
+  }
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f0f0f;
+    display: block;
+  }
+  .stat-label { font-size: 13px; color: #888; font-weight: 500; }
+
+  /* HOW IT WORKS */
+  section { padding: 100px 5vw; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .eyebrow-line { width: 24px; height: 2px; background: #2563eb; }
+  .eyebrow-text { font-size: 12px; font-weight: 700; color: #2563eb; letter-spacing: 0.08em; text-transform: uppercase; }
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0f0f0f;
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+  .section-sub {
+    font-size: 16px;
+    color: #666;
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 60px;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 32px;
+  }
+  .step-card {
+    padding: 32px 28px;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    position: relative;
+    background: #fff;
+    transition: border-color .2s, transform .2s;
+  }
+  .step-card:hover { border-color: #2563eb; transform: translateY(-4px); }
+  .step-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2563eb;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .step-icon {
+    width: 48px; height: 48px;
+    background: #eff6ff;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+  .step-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #0f0f0f;
+  }
+  .step-card p { font-size: 14px; color: #666; line-height: 1.7; }
+
+  /* FEATURES */
+  .features-section { background: #f8f9fc; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+  .feature-item { display: flex; gap: 16px; align-items: flex-start; }
+  .feature-check {
+    width: 24px; height: 24px;
+    background: #eff6ff;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 13px;
+    color: #2563eb;
+    font-weight: 700;
+  }
+  .feature-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .feature-item p { font-size: 13px; color: #666; line-height: 1.6; }
+
+  /* DATA PREVIEW */
+  .data-preview {
+    background: #0f0f0f;
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'Inter', monospace;
+  }
+  .data-preview-header {
+    background: #1a1a1a;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .data-preview-header span { font-size: 12px; color: #666; }
+  .data-preview pre {
+    padding: 24px;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #a3b3cc;
+    overflow-x: auto;
+  }
+  .json-key { color: #79b8ff; }
+  .json-str { color: #9ecbff; }
+  .json-num { color: #f97583; }
+  .json-bool { color: #fdab49; }
+
+  /* COUNTRIES */
+  .countries-section {}
+  .countries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .country-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    transition: border-color .2s, transform .2s;
+    cursor: default;
+  }
+  .country-card:hover { border-color: #2563eb; transform: translateY(-2px); }
+  .country-flag { font-size: 28px; display: block; margin-bottom: 6px; }
+  .country-name { font-size: 13px; font-weight: 600; color: #333; }
+  .country-count { font-size: 11px; color: #888; margin-top: 2px; }
+  .more-countries {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #888;
+  }
+  .more-countries strong { color: #2563eb; }
+
+  /* API DOCS PREVIEW */
+  .api-section { background: #f8f9fc; }
+  .api-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .endpoint-list { list-style: none; }
+  .endpoint-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .method-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    flex-shrink: 0;
+  }
+  .method-get { background: #d1fae5; color: #065f46; }
+  .method-post { background: #dbeafe; color: #1d4ed8; }
+  .endpoint-path { font-size: 13px; font-family: monospace; color: #0f0f0f; }
+  .endpoint-desc { font-size: 12px; color: #888; margin-left: auto; }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 60px;
+  }
+  .price-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 36px 32px;
+    background: #fff;
+    transition: border-color .2s;
+  }
+  .price-card.featured {
+    border: 2px solid #2563eb;
+    position: relative;
+  }
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2563eb;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 16px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .plan-name { font-size: 13px; font-weight: 700; color: #888; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+  .plan-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #0f0f0f;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .plan-price sup { font-size: 22px; vertical-align: top; margin-top: 8px; }
+  .plan-period { font-size: 13px; color: #888; margin-bottom: 28px; }
+  .plan-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
+  .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #444; }
+  .plan-features li::before { content: '✓'; color: #2563eb; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 60px;
+  }
+  .testimonial-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 28px;
+    transition: border-color .2s;
+  }
+  .testimonial-card:hover { border-color: #2563eb; }
+  .stars { color: #f59e0b; font-size: 14px; margin-bottom: 14px; letter-spacing: 2px; }
+  .testimonial-text { font-size: 14px; color: #444; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .reviewer-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #eff6ff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #2563eb;
+    flex-shrink: 0;
+  }
+  .reviewer-name { font-size: 14px; font-weight: 600; }
+  .reviewer-role { font-size: 12px; color: #888; }
+
+  /* CTA */
+  .cta-section {
+    background: #0f0f0f;
+    padding: 100px 5vw;
+    text-align: center;
+  }
+  .cta-section h2 { color: #fff; margin-bottom: 16px; }
+  .cta-section p { color: #888; font-size: 16px; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-section .btn-primary { background: #2563eb; font-size: 16px; padding: 16px 36px; }
+  .cta-section .btn-primary:hover { background: #1d4ed8; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid #f0f0f0;
+    padding: 48px 5vw 32px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand p { font-size: 13px; color: #888; margin-top: 12px; max-width: 240px; line-height: 1.7; }
+  .footer-col h5 { font-size: 12px; font-weight: 700; color: #0f0f0f; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul li a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; }
+  .footer-col ul li a:hover { color: #2563eb; }
+  .footer-bottom {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #aaa;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* MISC */
+  .tag {
+    display: inline-block;
+    background: #f0f4ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .divider {
+    height: 1px;
+    background: #f0f0f0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 60px 5vw; }
+    .features-grid { grid-template-columns: 1fr; }
+    .api-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .stats-inner { justify-content: center; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    </div>
+    MapLeads<span class="logo-dot">.</span>io
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#countries">Countries</a></li>
+    <li><a href="#api">API</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#pricing" class="nav-cta">Start free</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section style="padding: 0;">
+  <div class="hero">
+    <div>
+      <div class="hero-badge"><span></span> Live Google Maps data</div>
+      <h1>Find businesses <em>without websites</em> in any country</h1>
+      <p class="hero-sub">MapLeads scrapes Google Maps in real time to surface offline businesses — complete with phone numbers, addresses, categories, and ratings — across 30+ countries. Built for developers and growth teams.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">Start scraping free →</a>
+        <a href="#api" class="btn-secondary">View API docs</a>
+      </div>
+    </div>
+    <div class="hero-demo">
+      <div class="demo-header">
+        <div class="demo-dots"><span></span><span></span><span></span></div>
+        <span class="demo-title">MapLeads search</span>
+      </div>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" value="restaurants Berlin, Germany" readonly />
+      </div>
+      <div class="filters-row">
+        <div class="filter-chip active">No website</div>
+        <div class="filter-chip">Has phone</div>
+        <div class="filter-chip">4★+</div>
+        <div class="filter-chip">Open now</div>
+      </div>
+      <div class="result-cards">
+        <div class="result-card">
+          <div>
+            <div class="biz-name">Gasthaus Zur Linde</div>
+            <div class="biz-cat">Restaurant · Mitte, Berlin</div>
+          </div>
+          <div>
+            <div class="biz-phone">+49 30 2456 7890</div>
+            <div class="no-site">No website</div>
+          </div>
+        </div>
+        <div class="result-card">
+          <div>
+            <div class="biz-name">Bäckerei Schmidt</div>
+            <div class="biz-cat">Bakery · Prenzlauer Berg</div>
+          </div>
+          <div>
+            <div class="biz-phone">+49 30 4412 9981</div>
+            <div class="no-site">No website</div>
+          </div>
+        </div>
+        <div class="result-card">
+          <div>
+            <div class="biz-name">Friedrichshain Imbiss</div>
+            <div class="biz-cat">Fast food · Friedrichshain</div>
+          </div>
+          <div>
+            <div class="biz-phone">+49 30 9834 1120</div>
+            <div class="no-site">No website</div>
+          </div>
+        </div>
+      </div>
+      <button class="demo-run-btn">⚡ Run scrape — export 500 results</button>
+      <p class="demo-stat">Found <strong>2,847 businesses</strong> without websites in Berlin</p>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><span class="stat-num">50M+</span><span class="stat-label">Businesses indexed</span></div>
+    <div class="stat-item"><span class="stat-num">30+</span><span class="stat-label">Countries supported</span></div>
+    <div class="stat-item"><span class="stat-num">99.2%</span><span class="stat-label">Phone accuracy</span></div>
+    <div class="stat-item"><span class="stat-num">24/7</span><span class="stat-label">Real-time scraping</span></div>
+    <div class="stat-item"><span class="stat-num">12k+</span><span class="stat-label">Developers using API</span></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-inner">
+    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">How it works</span></div>
+    <h2>From search to leads in<br>under 60 seconds</h2>
+    <p class="section-sub">MapLeads automates the entire discovery pipeline — no API keys needed, no rate limits, no setup friction.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-num">STEP 01</span>
+        <div class="step-icon">🗺️</div>
+        <h3>Enter your search</h3>
+        <p>Type any business category and location. We support city, region, postal code, or country-level searches across 30+ countries.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">STEP 02</span>
+        <div class="step-icon">🔎</div>
+        <h3>We scrape Google Maps</h3>
+        <p>Our engine fetches live Google Maps results, bypassing restrictions without any API key. Always fresh, never cached from months ago.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">STEP 03</span>
+        <div class="step-icon">🚫</div>
+        <h3>Filter: no website only</h3>
+        <p>We detect which businesses are missing a website — a massive untapped market for web agencies, SaaS tools, and outreach campaigns.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">STEP 04</span>
+        <div class="step-icon">📤</div>
+        <h3>Export clean data</h3>
+        <p>Download as CSV or JSON with name, phone, address, category, rating, review count, GPS coordinates, and website status.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section id="features" class="features-section">
+  <div class="section-inner">
+    <div class="features-grid">
+      <div>
+        <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Features</span></div>
+        <h2>Everything a developer needs, nothing they don't</h2>
+        <p class="section-sub" style="margin-bottom: 36px;">Built API-first. Integrate MapLeads into your outreach tool, CRM, or SaaS product in minutes.</p>
+        <ul class="feature-list">
+          <li class="feature-item">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>No API key required</h4>
+              <p>We handle all Google Maps access internally. You just call our clean REST API.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>Phone number extraction</h4>
+              <p>Verified phone numbers formatted to international E.164 standard, ready for outreach.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>Website presence detection</h4>
+              <p>Accurately flags businesses with no website, outdated domain, or broken link.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>Bulk CSV/JSON export</h4>
+              <p>Export up to 50,000 results per job. Schedule recurring scrapes via webhook.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>GPS coordinates included</h4>
+              <p>Latitude and longitude for every result. Plot on your own maps, filter by radius.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-check">✓</div>
+            <div>
+              <h4>Webhook notifications</h4>
+              <p>Get notified when a scrape job completes. Pipe results directly into your workflow.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div class="data-preview">
+          <div class="data-preview-header">
+            <span>● response.json</span>
+          </div>
+          <pre>
+<span class="json-key">"results"</span>: [
+  {
+    <span class="json-key">"name"</span>: <span class="json-str">"Gasthaus Zur Linde"</span>,
+    <span class="json-key">"category"</span>: <span class="json-str">"Restaurant"</span>,
+    <span class="json-key">"phone"</span>: <span class="json-str">"+49 30 2456 7890"</span>,
+    <span class="json-key">"address"</span>: <span class="json-str">"Lindenstr. 14, Berlin"</span>,
+    <span class="json-key">"country"</span>: <span class="json-str">"DE"</span>,
+    <span class="json-key">"rating"</span>: <span class="json-num">4.3</span>,
+    <span class="json-key">"reviews"</span>: <span class="json-num">187</span>,
+    <span class="json-key">"has_website"</span>: <span class="json-bool">false</span>,
+    <span class="json-key">"website_url"</span>: <span class="json-bool">null</span>,
+    <span class="json-key">"lat"</span>: <span class="json-num">52.5061</span>,
+    <span class="json-key">"lng"</span>: <span class="json-num">13.3954</span>,
+    <span class="json-key">"place_id"</span>: <span class="json-str">"ChIJ_maps_id_here"</span>,
+    <span class="json-key">"hours"</span>: {
+      <span class="json-key">"monday"</span>: <span class="json-str">"11:00–22:00"</span>,
+      <span class="json-key">"tuesday"</span>: <span class="json-str">"11:00–22:00"</span>
+    },
+    <span class="json-key">"scraped_at"</span>: <span class="json-str">"2026-06-17T14:23:00Z"</span>
+  }
+]</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTRIES -->
+<section id="countries">
+  <div class="section-inner">
+    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Coverage</span></div>
+    <h2>Works across 30+ countries</h2>
+    <p class="section-sub">From major economies to emerging markets — we cover the places where offline businesses are most plentiful.</p>
+    <div class="countries-grid">
+      <div class="country-card"><span class="country-flag">🇩🇪</span><div class="country-name">Germany</div><div class="country-count">3.2M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇮🇹</span><div class="country-name">Italy</div><div class="country-count">2.8M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇫🇷</span><div class="country-name">France</div><div class="country-count">3.1M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇬🇧</span><div class="country-name">United Kingdom</div><div class="country-count">2.9M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇺🇸</span><div class="country-name">United States</div><div class="country-count">12.4M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇨🇦</span><div class="country-name">Canada</div><div class="country-count">1.8M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇳🇱</span><div class="country-name">Netherlands</div><div class="country-count">890K businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇪🇸</span><div class="country-name">Spain</div><div class="country-count">2.4M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇵🇹</span><div class="country-name">Portugal</div><div class="country-count">710K businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇧🇪</span><div class="country-name">Belgium</div><div class="country-count">640K businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇦🇺</span><div class="country-name">Australia</div><div class="country-count">1.1M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇯🇵</span><div class="country-name">Japan</div><div class="country-count">4.2M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇧🇷</span><div class="country-name">Brazil</div><div class="country-count">5.1M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇲🇽</span><div class="country-name">Mexico</div><div class="country-count">3.4M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇮🇳</span><div class="country-name">India</div><div class="country-count">9.8M businesses</div></div>
+      <div class="country-card"><span class="country-flag">🇿🇦</span><div class="country-name">South Africa</div><div class="country-count">820K businesses</div></div>
+    </div>
+    <p class="more-countries">+ 14 more countries. <strong>Request a country</strong> and we'll add it within 48 hours.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- API DOCS -->
+<section id="api" class="api-section">
+  <div class="section-inner">
+    <div class="api-grid">
+      <div>
+        <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Developer API</span></div>
+        <h2>REST API. Clean endpoints. Zero headaches.</h2>
+        <p class="section-sub" style="margin-bottom: 36px;">Integrate MapLeads into your stack in an afternoon. Full OpenAPI spec, SDKs for Node, Python, and PHP, and response times under 2s.</p>
+        <ul class="endpoint-list">
+          <li class="endpoint-item">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/v1/search</span>
+            <span class="endpoint-desc">Search businesses</span>
+          </li>
+          <li class="endpoint-item">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/v1/business/{id}</span>
+            <span class="endpoint-desc">Get full details</span>
+          </li>
+          <li class="endpoint-item">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/v1/bulk</span>
+            <span class="endpoint-desc">Start bulk scrape job</span>
+          </li>
+          <li class="endpoint-item">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/v1/jobs/{id}</span>
+            <span class="endpoint-desc">Check job status</span>
+          </li>
+          <li class="endpoint-item">
+            <span class="method-badge method-get">GET</span>
+            <span class="endpoint-path">/v1/export/{id}</span>
+            <span class="endpoint-desc">Download results</span>
+          </li>
+          <li class="endpoint-item">
+            <span class="method-badge method-post">POST</span>
+            <span class="endpoint-path">/v1/webhooks</span>
+            <span class="endpoint-desc">Register webhook</span>
+          </li>
+        </ul>
+      </div>
+      <div class="data-preview">
+        <div class="data-preview-header">
+          <span>● Example request</span>
+        </div>
+        <pre>
+<span class="json-key">curl</span> -X GET \
+  <span class="json-str">"https://api.mapleads.io/v1/search</span>
+  <span class="json-str">?query=restaurants</span>
+  <span class="json-str">&location=Berlin%2C+Germany</span>
+  <span class="json-str">&filter=no_website</span>
+  <span class="json-str">&has_phone=true</span>
+  <span class="json-str">&limit=100"</span> \
+  -H <span class="json-str">"Authorization: Bearer YOUR_API_KEY"</span> \
+  -H <span class="json-str">"Content-Type: application/json"</span>
+
+<span class="json-key"># Response</span>
+{
+  <span class="json-key">"status"</span>: <span class="json-str">"success"</span>,
+  <span class="json-key">"total"</span>: <span class="json-num">2847</span>,
+  <span class="json-key">"returned"</span>: <span class="json-num">100</span>,
+  <span class="json-key">"page"</span>: <span class="json-num">1</span>,
+  <span class="json-key">"results"</span>: [ ... ]
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Pricing</span></div>
+    <h2>Simple pricing, no surprises</h2>
+    <p class="section-sub">Start free. Scale as your business grows. Cancel anytime.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><sup>$</sup>0</div>
+        <div class="plan-period">Forever free</div>
+        <ul class="plan-features">
+          <li>500 results / month</li>
+          <li>5 countries</li>
+          <li>CSV export</li>
+          <li>Phone + address data</li>
+          <li>Website status filter</li>
+          <li>Community support</li>
+        </ul>
+        <a href="#" class="btn-secondary" style="width: 100%; justify-content: center; display: flex;">Get started free</a>
+      </div>
+      <div class="price-card featured">
+        <div class="featured-badge">MOST POPULAR</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>$</sup>49</div>
+        <div class="plan-period">per month, billed monthly</div>
+        <ul class="plan-features">
+          <li>25,000 results / month</li>
+          <li>All 30+ countries</li>
+          <li>CSV + JSON export</li>
+          <li>Full business details</li>
+          <li>REST API access</li>
+          <li>Webhook notifications</li>
+          <li>Email support (24h)</li>
+        </ul>
+        <a href="#" class="btn-primary" style="width: 100%; justify-content: center; display: flex;">Start 7-day free trial</a>
+      </div>
+      <div class="price-card">
+        <div class="plan-name">Agency</div>
+        <div class="plan-price"><sup>$</sup>199</div>
+        <div class="plan-period">per month, billed monthly</div>
+        <ul class="plan-features">
+          <li>250,000 results / month</li>
+          <li>All 30+ countries</li>
+          <li>Bulk job scheduler</li>
+          <li>Priority API rate limits</li>
+          <li>White-label export</li>
+          <li>Sub-accounts (5 seats)</li>
+          <li>Dedicated support</li>
+          <li>Custom webhook logic</li>
+        </ul>
+        <a href="#" class="btn-secondary" style="width: 100%; justify-content: center; display: flex;">Contact sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-inner">
+    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">What people say</span></div>
+    <h2>Used by agencies, freelancers,<br>and SaaS builders worldwide</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"We built our entire client acquisition pipeline on MapLeads. Found 4,000 restaurants in Germany with no website in one afternoon. Closed 12 new web design clients that month."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">MK</div>
+          <div>
+            <div class="reviewer-name">Marcus Keller</div>
+            <div class="reviewer-role">Founder, WebWerk Agency · Berlin</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"The API is exactly what I needed to power my SaaS outreach tool. Clean JSON, reliable uptime, and the no-website filter is pure gold for selling web services."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">SP</div>
+          <div>
+            <div class="reviewer-name">Sarah Patel</div>
+            <div class="reviewer-role">Developer, LeadFlow · London</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"I used MapLeads to find 800 plumbers in France without websites. Sent them all a cold email offering web design. Made back the subscription cost in day one."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">LB</div>
+          <div>
+            <div class="reviewer-name">Lucas Bernard</div>
+            <div class="reviewer-role">Freelance Web Designer · Lyon</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Start finding leads today</h2>
+  <p>500 results free. No credit card required. Export in under a minute.</p>
+  <a href="#pricing" class="btn-primary" style="margin: 0 auto; display: inline-flex;">Create free account →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="logo" style="font-size: 18px;">
+          <div class="logo-icon" style="width: 28px; height: 28px;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          </div>
+          MapLeads<span class="logo-dot">.</span>io
+        </a>
+        <p>Real-time Google Maps scraping to find businesses without websites. Built for developers and growth agencies.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#">How it works</a></li>
+          <li><a href="#">API docs</a></li>
+          <li><a href="#">Countries</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <ul>
+          <li><a href="#">REST API reference</a></li>
+          <li><a href="#">Node.js SDK</a></li>
+          <li><a href="#">Python SDK</a></li>
+          <li><a href="#">Webhooks guide</a></li>
+          <li><a href="#">Status page</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MapLeads.io — All rights reserved</span>
+      <span>Made with ♥ for developers worldwide</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
