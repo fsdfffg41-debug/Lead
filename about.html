@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About MapLeads - Our Story & Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #0f0f0f;
+    line-height: 1.6;
+  }
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f0f0f;
+    text-decoration: none;
+  }
+  .logo-dot { color: #2563eb; }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #0f0f0f; }
+  section { padding: 80px 5vw; }
+  .inner { max-width: 1000px; margin: 0 auto; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 60px 0 20px;
+  }
+  p { font-size: 17px; color: #666; line-height: 1.8; margin-bottom: 20px; }
+  .hero-text { font-size: 20px; color: #666; margin-bottom: 40px; }
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin: 60px 0;
+  }
+  .value-card {
+    background: #f8f9fc;
+    padding: 32px;
+    border-radius: 12px;
+    border-left: 4px solid #2563eb;
+  }
+  .value-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+  .value-card p { font-size: 14px; color: #666; margin: 0; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+    margin: 40px 0;
+  }
+  .team-member {
+    text-align: center;
+  }
+  .member-avatar {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+  .member-name { font-weight: 600; margin-bottom: 4px; }
+  .member-role { font-size: 13px; color: #888; }
+  .footer { text-align: center; color: #888; font-size: 14px; padding: 40px; border-top: 1px solid #f0f0f0; }
+  @media (max-width: 768px) {
+    h1 { font-size: 32px; }
+    h2 { font-size: 24px; }
+    section { padding: 40px 5vw; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">MapLeads<span class="logo-dot">.</span>io</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/docs.html">Docs</a></li>
+    <li><a href="/pricing.html">Pricing</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/admin.html">Admin</a></li>
+  </ul>
+</nav>
+
+<section>
+  <div class="inner">
+    <h1>About MapLeads</h1>
+    <p class="hero-text">We're building the easiest way for agencies and businesses to find offline companies ready for digital services.</p>
+    
+    <h2>Our Mission</h2>
+    <p>To unlock the untapped market of 50M+ businesses without a web presence. We make lead generation simple, affordable, and accessible to everyone—from solo freelancers to enterprise agencies.</p>
+    
+    <h2>Our Story</h2>
+    <p>Founded in 2025 by a team of data engineers and growth hackers frustrated with expensive lead gen tools, MapLeads started with a simple question: "Why is scraping Google Maps data so complicated?"</p>
+    <p>We built MapLeads to answer that. Today, 12,000+ developers use our API to find leads across 30+ countries. Our customers have closed millions in deals targeting offline businesses.</p>
+    
+    <h2>Our Values</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <h3>🎯 Simplicity</h3>
+        <p>Complex tools for simple problems. We make lead generation effortless.</p>
+      </div>
+      <div class="value-card">
+        <h3>🤝 Transparency</h3>
+        <p>No hidden fees. No locked APIs. Honest pricing that scales with you.</p>
+      </div>
+      <div class="value-card">
+        <h3>⚡ Speed</h3>
+        <p>Real-time data, sub-2s API response times. Fast data for fast growth.</p>
+      </div>
+      <div class="value-card">
+        <h3>📊 Accuracy</h3>
+        <p>99.2% phone number accuracy. Data you can actually call and close.</p>
+      </div>
+    </div>
+    
+    <h2>Our Team</h2>
+    <p>We're a small, talented team of engineers, growth experts, and customer advocates passionate about solving real problems.</p>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="member-avatar">👨‍💼</div>
+        <div class="member-name">Alex Chen</div>
+        <div class="member-role">Co-founder & CEO</div>
+      </div>
+      <div class="team-member">
+        <div class="member-avatar">👨‍💻</div>
+        <div class="member-name">David Park</div>
+        <div class="member-role">CTO & Co-founder</div>
+      </div>
+      <div class="team-member">
+        <div class="member-avatar">👩‍💼</div>
+        <div class="member-name">Sarah Martinez</div>
+        <div class="member-role">VP Growth</div>
+      </div>
+      <div class="team-member">
+        <div class="member-avatar">👨‍💻</div>
+        <div class="member-name">James Kim</div>
+        <div class="member-role">Lead Engineer</div>
+      </div>
+    </div>
+    
+    <h2>By The Numbers</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <h3>50M+</h3>
+        <p>Businesses indexed on Google Maps</p>
+      </div>
+      <div class="value-card">
+        <h3>12K+</h3>
+        <p>Developers using our API</p>
+      </div>
+      <div class="value-card">
+        <h3>30+</h3>
+        <p>Countries supported globally</p>
+      </div>
+      <div class="value-card">
+        <h3>99.2%</h3>
+        <p>Phone number accuracy rate</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>&copy; 2026 MapLeads. Made with ❤️ by the team building the future of lead gen. <a href="/contact.html" style="color: #2563eb;">Get in touch</a></p>
+</div>
+
+</body>
+</html>

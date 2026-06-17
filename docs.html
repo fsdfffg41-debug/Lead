@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MapLeads API Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #0f0f0f;
+    line-height: 1.6;
+  }
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f0f0f;
+    text-decoration: none;
+  }
+  .logo-dot { color: #2563eb; }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #0f0f0f; }
+  .container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 5vw;
+  }
+  .sidebar {
+    border-right: 1px solid #f0f0f0;
+    padding-right: 40px;
+  }
+  .sidebar h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #2563eb;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .sidebar ul {
+    list-style: none;
+  }
+  .sidebar li {
+    margin-bottom: 12px;
+  }
+  .sidebar a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color .2s;
+  }
+  .sidebar a:hover { color: #2563eb; }
+  .content h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .content > p {
+    color: #666;
+    font-size: 17px;
+    margin-bottom: 40px;
+  }
+  .section {
+    margin-bottom: 60px;
+  }
+  .section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #0f0f0f;
+  }
+  .section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+  .section p { color: #666; margin-bottom: 16px; }
+  .code-block {
+    background: #1a1a1a;
+    color: #a3b3cc;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 20px 0;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .endpoint-card {
+    background: #f8f9fc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .method {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .method-get { background: #d1fae5; color: #065f46; }
+  .method-post { background: #dbeafe; color: #1d4ed8; }
+  .endpoint-path { font-family: monospace; color: #2563eb; }
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  .param-table th, .param-table td {
+    border: 1px solid #e5e7eb;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .param-table th {
+    background: #f8f9fc;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .param-table td { font-size: 14px; }
+  .footer {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+  }
+  @media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 1px solid #f0f0f0; padding-right: 0; padding-bottom: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">MapLeads<span class="logo-dot">.</span>io</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/docs.html">Docs</a></li>
+    <li><a href="/pricing.html">Pricing</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/admin.html">Admin</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <aside class="sidebar">
+    <div>
+      <h3>Getting Started</h3>
+      <ul>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#auth">Authentication</a></li>
+        <li><a href="#quickstart">Quick Start</a></li>
+      </ul>
+    </div>
+    <div style="margin-top: 32px;">
+      <h3>API Reference</h3>
+      <ul>
+        <li><a href="#search">Search Endpoint</a></li>
+        <li><a href="#business">Business Details</a></li>
+        <li><a href="#bulk">Bulk Jobs</a></li>
+        <li><a href="#export">Export Data</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="content">
+    <h1>API Documentation</h1>
+    <p>Complete reference for integrating MapLeads into your application. Fast, reliable, and easy to use.</p>
+
+    <div class="section" id="intro">
+      <h2>Introduction</h2>
+      <p>MapLeads API provides real-time access to business data from Google Maps. Scrape businesses without websites, get verified phone numbers, and export clean data in seconds.</p>
+      <p><strong>Base URL:</strong> https://api.mapleads.io/v1</p>
+      <p><strong>Authentication:</strong> Bearer token in Authorization header</p>
+    </div>
+
+    <div class="section" id="auth">
+      <h2>Authentication</h2>
+      <p>All API requests require an Authorization header with a bearer token:</p>
+      <div class="code-block">curl https://api.mapleads.io/v1/search \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"</div>
+      <p>Get your API key from your <a href="/admin.html" style="color: #2563eb;">admin dashboard</a>.</p>
+    </div>
+
+    <div class="section" id="quickstart">
+      <h2>Quick Start</h2>
+      <h3>1. Install SDK</h3>
+      <div class="code-block">npm install mapleads</div>
+      <h3>2. Initialize Client</h3>
+      <div class="code-block">const MapLeads = require('mapleads');
+const client = new MapLeads('YOUR_API_KEY');</div>
+      <h3>3. Search Businesses</h3>
+      <div class="code-block">const results = await client.search({
+  query: 'restaurants',
+  location: 'Berlin, Germany',
+  filter: 'no_website'
+});</div>
+    </div>
+
+    <div class="section" id="search">
+      <h2>Search Endpoint</h2>
+      <div class="endpoint-card">
+        <span class="method method-get">GET</span>
+        <div class="endpoint-path">/search</div>
+        <p>Search for businesses matching criteria</p>
+      </div>
+      <h3>Parameters</h3>
+      <table class="param-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>query</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>Business category (e.g., restaurants, plumbers)</td>
+          </tr>
+          <tr>
+            <td>location</td>
+            <td>string</td>
+            <td>Yes</td>
+            <td>City, region, or country</td>
+          </tr>
+          <tr>
+            <td>filter</td>
+            <td>string</td>
+            <td>No</td>
+            <td>no_website, has_phone, rating_4plus</td>
+          </tr>
+          <tr>
+            <td>limit</td>
+            <td>integer</td>
+            <td>No</td>
+            <td>Results per page (default: 50, max: 500)</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Example Request</h3>
+      <div class="code-block">curl "https://api.mapleads.io/v1/search?query=restaurants&location=Berlin,Germany&filter=no_website&limit=100" \
+  -H "Authorization: Bearer YOUR_API_KEY"</div>
+      <h3>Example Response</h3>
+      <div class="code-block">{
+  "status": "success",
+  "total": 2847,
+  "results": [
+    {
+      "name": "Gasthaus Zur Linde",
+      "phone": "+49 30 2456 7890",
+      "address": "Lindenstr. 14, Berlin",
+      "rating": 4.3,
+      "has_website": false,
+      "lat": 52.5061,
+      "lng": 13.3954
+    }
+  ]
+}</div>
+    </div>
+
+    <div class="section" id="business">
+      <h2>Business Details</h2>
+      <div class="endpoint-card">
+        <span class="method method-get">GET</span>
+        <div class="endpoint-path">/business/{id}</div>
+        <p>Get detailed information about a specific business</p>
+      </div>
+      <h3>Parameters</h3>
+      <table class="param-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>id</td>
+            <td>string</td>
+            <td>Business ID from search results</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section" id="bulk">
+      <h2>Bulk Jobs</h2>
+      <div class="endpoint-card">
+        <span class="method method-post">POST</span>
+        <div class="endpoint-path">/bulk</div>
+        <p>Start a bulk scraping job</p>
+      </div>
+      <div class="code-block">curl -X POST https://api.mapleads.io/v1/bulk \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "restaurants",
+    "location": "Berlin, Germany",
+    "filter": "no_website"
+  }'</div>
+    </div>
+
+    <div class="section" id="export">
+      <h2>Export Data</h2>
+      <div class="endpoint-card">
+        <span class="method method-get">GET</span>
+        <div class="endpoint-path">/export/{id}</div>
+        <p>Download results as CSV or JSON</p>
+      </div>
+      <p>Supported formats: CSV, JSON, Excel</p>
+    </div>
+
+    <div class="footer">
+      <p>&copy; 2026 MapLeads. API Documentation. Need help? <a href="/contact.html" style="color: #2563eb;">Contact support</a></p>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

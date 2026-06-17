@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MapLeads Blog - Lead Generation Tips & Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #0f0f0f;
+    line-height: 1.6;
+  }
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f0f0f;
+    text-decoration: none;
+  }
+  .logo-dot { color: #2563eb; }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #0f0f0f; }
+  section { padding: 80px 5vw; }
+  .inner { max-width: 1200px; margin: 0 auto; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .intro { text-align: center; color: #666; font-size: 18px; margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+  .article-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .article-card:hover { border-color: #2563eb; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(37,99,235,0.1); }
+  .article-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+  }
+  .article-content { padding: 24px; }
+  .article-date { font-size: 12px; color: #888; }
+  .article-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 12px 0;
+    color: #0f0f0f;
+  }
+  .article-excerpt { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+  .read-more {
+    display: inline-block;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .read-more:hover { text-decoration: underline; }
+  .footer { text-align: center; color: #888; font-size: 14px; padding: 40px; border-top: 1px solid #f0f0f0; }
+  @media (max-width: 768px) {
+    .blog-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">MapLeads<span class="logo-dot">.</span>io</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/docs.html">Docs</a></li>
+    <li><a href="/pricing.html">Pricing</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/admin.html">Admin</a></li>
+  </ul>
+</nav>
+
+<section>
+  <div class="inner">
+    <h1>MapLeads Blog</h1>
+    <p class="intro">Lead generation tips, industry insights, and product updates from the MapLeads team.</p>
+    
+    <div class="blog-grid">
+      <div class="article-card">
+        <div class="article-image">📍</div>
+        <div class="article-content">
+          <div class="article-date">June 15, 2026</div>
+          <div class="article-title">How to Find Businesses Without Websites</div>
+          <div class="article-excerpt">Discover the 5 most effective strategies for identifying and targeting offline businesses in your market.</div>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-image">🚀</div>
+        <div class="article-content">
+          <div class="article-date">June 10, 2026</div>
+          <div class="article-title">Launching MapLeads 2.0: Faster Than Ever</div>
+          <div class="article-excerpt">We've completely rebuilt our scraping engine. Now 3x faster with improved accuracy and 99.2% phone data validation.</div>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-image">💼</div>
+        <div class="article-content">
+          <div class="article-date">June 5, 2026</div>
+          <div class="article-title">Case Study: Web Agency Lands 12 Clients in 30 Days</div>
+          <div class="article-excerpt">How Digital Agency Co used MapLeads to build a $47k/month lead generation pipeline targeting businesses without websites.</div>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-image">🌍</div>
+        <div class="article-content">
+          <div class="article-date">May 28, 2026</div>
+          <div class="article-title">Now Covering 30+ Countries on Google Maps</div>
+          <div class="article-excerpt">Expanding global coverage. From Europe to Asia Pacific, find offline businesses everywhere.</div>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-image">📊</div>
+        <div class="article-content">
+          <div class="article-date">May 20, 2026</div>
+          <div class="article-title">The Ultimate Guide to B2B Lead Generation in 2026</div>
+          <div class="article-excerpt">Master the latest B2B lead gen strategies, tools, and best practices that actually work in today's market.</div>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-image">🎯</div>
+        <div class="article-content">
+          <div class="article-date">May 15, 2026</div>
+          <div class="article-title">Cold Outreach 101: Converting Offline Businesses</div>
+          <div class="article-excerpt">Proven templates and strategies for converting offline businesses into paying web design and development clients.</div>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>&copy; 2026 MapLeads Blog. Subscribe for updates. Need help? <a href="/contact.html" style="color: #2563eb;">Contact us</a></p>
+</div>
+
+</body>
+</html>

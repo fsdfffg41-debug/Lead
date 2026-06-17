@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MapLeads Pricing - Simple, Transparent Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #0f0f0f;
+    line-height: 1.6;
+  }
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f0f0f;
+    text-decoration: none;
+  }
+  .logo-dot { color: #2563eb; }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: #0f0f0f; }
+  section { padding: 100px 5vw; }
+  .inner { max-width: 1200px; margin: 0 auto; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .subtitle { text-align: center; color: #666; font-size: 18px; margin-bottom: 60px; }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-bottom: 80px;
+  }
+  .price-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 40px 32px;
+    background: #fff;
+    transition: all .2s;
+    position: relative;
+  }
+  .price-card:hover { border-color: #2563eb; box-shadow: 0 20px 60px rgba(37,99,235,0.08); }
+  .price-card.featured {
+    border: 2px solid #2563eb;
+    transform: scale(1.05);
+  }
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2563eb;
+    color: #fff;
+    padding: 4px 16px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .plan-name { font-size: 13px; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 16px; }
+  .plan-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .plan-price sup { font-size: 24px; }
+  .plan-period { font-size: 13px; color: #888; margin-bottom: 32px; }
+  .plan-features { list-style: none; margin-bottom: 32px; }
+  .plan-features li {
+    padding: 12px 0;
+    font-size: 14px;
+    color: #666;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+  }
+  .plan-features li::before { content: '✓'; color: #2563eb; font-weight: 700; margin-right: 12px; }
+  .btn-primary {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: #1d4ed8; }
+  .btn-secondary {
+    width: 100%;
+    background: #fff;
+    color: #0f0f0f;
+    border: 1.5px solid #e5e5e5;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-secondary:hover { border-color: #2563eb; color: #2563eb; }
+  .faq { margin-top: 80px; }
+  .faq h2 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; margin-bottom: 40px; text-align: center; }
+  .faq-item {
+    background: #f8f9fc;
+    padding: 24px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .faq-q { font-weight: 600; margin-bottom: 12px; cursor: pointer; }
+  .faq-a { font-size: 14px; color: #666; }
+  .footer { text-align: center; color: #888; font-size: 14px; padding: 40px; border-top: 1px solid #f0f0f0; }
+  @media (max-width: 768px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .price-card.featured { transform: scale(1); }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">MapLeads<span class="logo-dot">.</span>io</a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/docs.html">Docs</a></li>
+    <li><a href="/pricing.html">Pricing</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/admin.html">Admin</a></li>
+  </ul>
+</nav>
+
+<section>
+  <div class="inner">
+    <h1>Simple Pricing, No Surprises</h1>
+    <p class="subtitle">Start free. Scale as you grow. Cancel anytime.</p>
+    
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">$<span>0</span></div>
+        <div class="plan-period">Forever free</div>
+        <ul class="plan-features">
+          <li>500 results/month</li>
+          <li>5 countries</li>
+          <li>CSV export</li>
+          <li>Phone + address</li>
+          <li>Website status filter</li>
+          <li>Community support</li>
+        </ul>
+        <button class="btn-secondary">Get started free</button>
+      </div>
+
+      <div class="price-card featured">
+        <div class="featured-badge">MOST POPULAR</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">$<span>49</span></div>
+        <div class="plan-period">per month, billed monthly</div>
+        <ul class="plan-features">
+          <li>25,000 results/month</li>
+          <li>All 30+ countries</li>
+          <li>CSV + JSON export</li>
+          <li>Full business details</li>
+          <li>REST API access</li>
+          <li>Webhook notifications</li>
+          <li>24-hour email support</li>
+        </ul>
+        <button class="btn-primary">Start free trial</button>
+      </div>
+
+      <div class="price-card">
+        <div class="plan-name">Agency</div>
+        <div class="plan-price">$<span>199</span></div>
+        <div class="plan-period">per month, billed monthly</div>
+        <ul class="plan-features">
+          <li>250,000 results/month</li>
+          <li>All 30+ countries</li>
+          <li>Bulk job scheduler</li>
+          <li>Priority API limits</li>
+          <li>White-label export</li>
+          <li>Sub-accounts (5 seats)</li>
+          <li>Dedicated support</li>
+        </ul>
+        <button class="btn-secondary">Contact sales</button>
+      </div>
+    </div>
+
+    <div class="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <div class="faq-q">❓ Can I upgrade or downgrade my plan?</div>
+        <div class="faq-a">Yes! Change your plan anytime from your dashboard. Changes take effect at the next billing cycle.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">❓ Is there a free trial for Pro and Agency?</div>
+        <div class="faq-a">Yes! 7 days free for Pro. Agency plans include a custom trial period. No credit card required.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">❓ What happens when I exceed my limits?</div>
+        <div class="faq-a">We'll notify you before you hit your limit. You can upgrade anytime or purchase additional credits.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">❓ Do you offer annual billing?</div>
+        <div class="faq-a">Yes! Annual plans get 20% discount. Contact our sales team for custom arrangements.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>&copy; 2026 MapLeads. Transparent pricing for everyone. Questions? <a href="/contact.html" style="color: #2563eb;">Contact us</a></p>
+</div>
+
+</body>
+</html>
