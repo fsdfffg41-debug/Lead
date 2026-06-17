@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MapLeads Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f5f7fa;
+    color: #0f0f0f;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* LOGIN SCREEN */
+  .login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  }
+  .login-box {
+    background: #fff;
+    padding: 48px;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 400px;
+  }
+  .login-box h1 { font-size: 28px; margin-bottom: 12px; text-align: center; }
+  .login-box p { color: #888; text-align: center; margin-bottom: 32px; font-size: 14px; }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus { outline: none; border-color: #2563eb; }
+  .login-btn {
+    width: 100%;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    margin-top: 16px;
+  }
+  .login-btn:hover { background: #1d4ed8; }
+  .error-message {
+    display: none;
+    background: #fee;
+    color: #c00;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+  .error-message.show { display: block; }
+
+  /* DASHBOARD */
+  .admin-container { display: none; }
+  .admin-container.show { display: flex; }
+  .sidebar {
+    width: 260px;
+    background: #1a1f3a;
+    color: #fff;
+    padding: 24px;
+    min-height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  .sidebar-logo {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 32px;
+    color: #2563eb;
+  }
+  .sidebar-menu { list-style: none; }
+  .sidebar-menu li {
+    margin-bottom: 8px;
+  }
+  .sidebar-menu a {
+    display: block;
+    color: #aaa;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .sidebar-menu a:hover { background: #2a2f4a; color: #fff; }
+  .sidebar-menu a.active { background: #2563eb; color: #fff; }
+  .logout-btn {
+    width: 100%;
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 32px;
+    font-weight: 600;
+  }
+  .logout-btn:hover { background: #b91c1c; }
+
+  .main-content {
+    margin-left: 260px;
+    padding: 32px;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .header h1 { font-size: 24px; }
+
+  /* DASHBOARD SECTIONS */
+  .dashboard-section { display: none; }
+  .dashboard-section.active { display: block; }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .stat-card h3 { font-size: 13px; color: #888; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; }
+  .stat-card .number { font-size: 32px; font-weight: 700; color: #2563eb; }
+  .stat-card .change { font-size: 12px; color: #22c55e; margin-top: 8px; }
+
+  /* TABLE */
+  .table-container {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    background: #f8f9fa;
+    padding: 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: #666;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  td {
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  tr:hover { background: #f9fafb; }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-success { background: #d1fae5; color: #065f46; }
+  .badge-pending { background: #fef3cd; color: #856404; }
+  .badge-danger { background: #fee; color: #c00; }
+
+  /* FORM */
+  .form-container {
+    background: #fff;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    max-width: 600px;
+  }
+  .form-group { margin-bottom: 24px; }
+  .form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus { outline: none; border-color: #2563eb; }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .submit-btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: #1d4ed8; }
+
+  /* MODAL */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+  .modal.show { display: flex; align-items: center; justify-content: center; }
+  .modal-content {
+    background: #fff;
+    padding: 32px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #888; }
+
+  @media (max-width: 768px) {
+    .sidebar { width: 100%; height: auto; position: relative; }
+    .main-content { margin-left: 0; padding: 16px; }
+    .header { flex-direction: column; gap: 16px; }
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-container">
+  <div class="login-box">
+    <h1>MapLeads Admin</h1>
+    <p>Sign in to manage your leads platform</p>
+    <div class="error-message" id="errorMessage"></div>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Admin Password</label>
+        <input type="password" id="passwordInput" placeholder="Enter admin password" required>
+      </div>
+      <button type="submit" class="login-btn">Sign in</button>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="adminContainer" class="admin-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">MapLeads</div>
+    <ul class="sidebar-menu">
+      <li><a href="javascript:showSection('dashboard')" class="menu-link active" data-section="dashboard">📊 Dashboard</a></li>
+      <li><a href="javascript:showSection('users')" class="menu-link" data-section="users">👥 Users</a></li>
+      <li><a href="javascript:showSection('leads')" class="menu-link" data-section="leads">📋 Leads Data</a></li>
+      <li><a href="javascript:showSection('subscriptions')" class="menu-link" data-section="subscriptions">💳 Subscriptions</a></li>
+      <li><a href="javascript:showSection('content')" class="menu-link" data-section="content">✏️ Content</a></li>
+      <li><a href="javascript:showSection('pages')" class="menu-link" data-section="pages">📄 Pages</a></li>
+      <li><a href="javascript:showSection('analytics')" class="menu-link" data-section="analytics">📈 Analytics</a></li>
+      <li><a href="javascript:showSection('settings')" class="menu-link" data-section="settings">⚙️ Settings</a></li>
+    </ul>
+    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div class="header">
+      <h1 id="sectionTitle">Dashboard</h1>
+      <div>Admin • <span id="currentTime"></span></div>
+    </div>
+
+    <!-- DASHBOARD SECTION -->
+    <div id="dashboard" class="dashboard-section active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Users</h3>
+          <div class="number">2,847</div>
+          <div class="change">↑ 12% from last month</div>
+        </div>
+        <div class="stat-card">
+          <h3>Active Subscriptions</h3>
+          <div class="number">1,243</div>
+          <div class="change">↑ 8% from last month</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Revenue</h3>
+          <div class="number">$84,920</div>
+          <div class="change">↑ 23% from last month</div>
+        </div>
+        <div class="stat-card">
+          <h3>Leads Generated</h3>
+          <div class="number">156.2K</div>
+          <div class="change">↑ 45% from last month</div>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 32px; margin-bottom: 16px;">Recent Activities</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Activity</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alex Chen</td>
+              <td>Upgraded to Pro plan</td>
+              <td>Today</td>
+              <td><span class="badge badge-success">Completed</span></td>
+            </tr>
+            <tr>
+              <td>Sarah Martinez</td>
+              <td>Ran bulk scrape job</td>
+              <td>2 hours ago</td>
+              <td><span class="badge badge-success">Completed</span></td>
+            </tr>
+            <tr>
+              <td>James Kim</td>
+              <td>API integration setup</td>
+              <td>Yesterday</td>
+              <td><span class="badge badge-pending">In Progress</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS SECTION -->
+    <div id="users" class="dashboard-section">
+      <button class="submit-btn" onclick="openModal('addUser')" style="margin-bottom: 20px;">+ Add New User</button>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Plan</th>
+              <th>Join Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alex Chen</td>
+              <td>alex@example.com</td>
+              <td>Pro</td>
+              <td>2026-01-15</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td><button onclick="editUser(this)" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+            <tr>
+              <td>Sarah Martinez</td>
+              <td>sarah@example.com</td>
+              <td>Agency</td>
+              <td>2025-11-22</td>
+              <td><span class="badge badge-success">Active</span></td>
+              <td><button onclick="editUser(this)" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+            <tr>
+              <td>James Kim</td>
+              <td>james@example.com</td>
+              <td>Starter</td>
+              <td>2026-02-10</td>
+              <td><span class="badge badge-pending">Pending</span></td>
+              <td><button onclick="editUser(this)" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LEADS DATA SECTION -->
+    <div id="leads" class="dashboard-section">
+      <button class="submit-btn" onclick="openModal('importLeads')" style="margin-bottom: 20px;">📥 Import Leads</button>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Business Name</th>
+              <th>Category</th>
+              <th>Location</th>
+              <th>Phone</th>
+              <th>Website Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gasthaus Zur Linde</td>
+              <td>Restaurant</td>
+              <td>Berlin, Germany</td>
+              <td>+49 30 2456 7890</td>
+              <td><span class="badge badge-danger">No Website</span></td>
+            </tr>
+            <tr>
+              <td>Bäckerei Schmidt</td>
+              <td>Bakery</td>
+              <td>Berlin, Germany</td>
+              <td>+49 30 4412 9981</td>
+              <td><span class="badge badge-danger">No Website</span></td>
+            </tr>
+            <tr>
+              <td>Friedrichshain Imbiss</td>
+              <td>Fast Food</td>
+              <td>Berlin, Germany</td>
+              <td>+49 30 9834 1120</td>
+              <td><span class="badge badge-danger">No Website</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SUBSCRIPTIONS SECTION -->
+    <div id="subscriptions" class="dashboard-section">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Plan</th>
+              <th>Monthly Cost</th>
+              <th>Renewal Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alex Chen</td>
+              <td>Pro</td>
+              <td>$49</td>
+              <td>2026-07-15</td>
+              <td><span class="badge badge-success">Active</span></td>
+            </tr>
+            <tr>
+              <td>Sarah Martinez</td>
+              <td>Agency</td>
+              <td>$199</td>
+              <td>2026-07-22</td>
+              <td><span class="badge badge-success">Active</span></td>
+            </tr>
+            <tr>
+              <td>James Kim</td>
+              <td>Starter</td>
+              <td>Free</td>
+              <td>N/A</td>
+              <td><span class="badge badge-success">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONTENT SECTION -->
+    <div id="content" class="dashboard-section">
+      <button class="submit-btn" onclick="openModal('editContent')" style="margin-bottom: 20px;">✏️ Edit Content</button>
+      <div class="form-container">
+        <div class="form-group">
+          <label>Homepage Hero Title</label>
+          <textarea readonly>Find businesses without websites in any country</textarea>
+        </div>
+        <div class="form-group">
+          <label>Homepage Hero Subtitle</label>
+          <textarea readonly>MapLeads scrapes Google Maps in real time to surface offline businesses with 30+ country coverage</textarea>
+        </div>
+        <div class="form-group">
+          <label>CTA Button Text</label>
+          <input type="text" readonly value="Start scraping free →">
+        </div>
+        <button class="submit-btn" onclick="openModal('editContent')">Edit All Content</button>
+      </div>
+    </div>
+
+    <!-- PAGES SECTION -->
+    <div id="pages" class="dashboard-section">
+      <button class="submit-btn" onclick="openModal('createPage')" style="margin-bottom: 20px;">+ Create New Page</button>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Page Name</th>
+              <th>URL Slug</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Home</td>
+              <td>/</td>
+              <td><span class="badge badge-success">Published</span></td>
+              <td><button onclick="editPage()" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+            <tr>
+              <td>Documentation</td>
+              <td>/docs</td>
+              <td><span class="badge badge-success">Published</span></td>
+              <td><button onclick="editPage()" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>/pricing</td>
+              <td><span class="badge badge-success">Published</span></td>
+              <td><button onclick="editPage()" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+            <tr>
+              <td>Blog</td>
+              <td>/blog</td>
+              <td><span class="badge badge-pending">Draft</span></td>
+              <td><button onclick="editPage()" class="submit-btn" style="padding: 6px 12px; font-size: 12px;">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ANALYTICS SECTION -->
+    <div id="analytics" class="dashboard-section">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Page Views</h3>
+          <div class="number">142.5K</div>
+          <div class="change">↑ 18% from last week</div>
+        </div>
+        <div class="stat-card">
+          <h3>Unique Visitors</h3>
+          <div class="number">45.2K</div>
+          <div class="change">↑ 12% from last week</div>
+        </div>
+        <div class="stat-card">
+          <h3>Conversion Rate</h3>
+          <div class="number">3.8%</div>
+          <div class="change">↑ 0.5% from last week</div>
+        </div>
+        <div class="stat-card">
+          <h3>Avg Session Time</h3>
+          <div class="number">4m 32s</div>
+          <div class="change">↑ 1m 15s from last week</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS SECTION -->
+    <div id="settings" class="dashboard-section">
+      <div class="form-container">
+        <h2 style="margin-bottom: 24px;">Admin Settings</h2>
+        <div class="form-group">
+          <label>Admin Email</label>
+          <input type="email" value="admin@mapleads.io">
+        </div>
+        <div class="form-group">
+          <label>Admin Password</label>
+          <input type="password" value="••••••••••••" readonly>
+          <button class="submit-btn" style="margin-top: 8px;">Change Password</button>
+        </div>
+        <div class="form-group">
+          <label>Site URL</label>
+          <input type="text" value="https://mapleads.io">
+        </div>
+        <div class="form-group">
+          <label>Support Email</label>
+          <input type="email" value="support@mapleads.io">
+        </div>
+        <button class="submit-btn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="addUserModal" class="modal" onclick="closeModal(event, 'addUser')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Add New User</h3>
+      <button class="close-btn" onclick="closeModal(null, 'addUser')">&times;</button>
+    </div>
+    <form onsubmit="handleAddUser(event)">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" required>
+      </div>
+      <div class="form-group">
+        <label>Plan</label>
+        <select required>
+          <option>Starter</option>
+          <option>Pro</option>
+          <option>Agency</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-btn" style="width: 100%;">Add User</button>
+    </form>
+  </div>
+</div>
+
+<div id="editContentModal" class="modal" onclick="closeModal(event, 'editContent')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Edit Content</h3>
+      <button class="close-btn" onclick="closeModal(null, 'editContent')">&times;</button>
+    </div>
+    <form onsubmit="handleEditContent(event)">
+      <div class="form-group">
+        <label>Homepage Hero Title</label>
+        <textarea required>Find businesses without websites in any country</textarea>
+      </div>
+      <div class="form-group">
+        <label>Homepage Subtitle</label>
+        <textarea required>MapLeads scrapes Google Maps in real time to surface offline businesses</textarea>
+      </div>
+      <button type="submit" class="submit-btn" style="width: 100%;">Save Content</button>
+    </form>
+  </div>
+</div>
+
+<div id="createPageModal" class="modal" onclick="closeModal(event, 'createPage')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Create New Page</h3>
+      <button class="close-btn" onclick="closeModal(null, 'createPage')">&times;</button>
+    </div>
+    <form onsubmit="handleCreatePage(event)">
+      <div class="form-group">
+        <label>Page Title</label>
+        <input type="text" required>
+      </div>
+      <div class="form-group">
+        <label>URL Slug</label>
+        <input type="text" placeholder="/page-name" required>
+      </div>
+      <div class="form-group">
+        <label>Content</label>
+        <textarea required placeholder="Page content here..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn" style="width: 100%;">Create Page</button>
+    </form>
+  </div>
+</div>
+
+<div id="importLeadsModal" class="modal" onclick="closeModal(event, 'importLeads')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Import Leads</h3>
+      <button class="close-btn" onclick="closeModal(null, 'importLeads')">&times;</button>
+    </div>
+    <form onsubmit="handleImportLeads(event)">
+      <div class="form-group">
+        <label>CSV File</label>
+        <input type="file" accept=".csv" required>
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" placeholder="e.g., Germany" required>
+      </div>
+      <button type="submit" class="submit-btn" style="width: 100%;">Import</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const ADMIN_PASSWORD = 'Admin2026';
+  let isLoggedIn = false;
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const password = document.getElementById('passwordInput').value;
+    if (password === ADMIN_PASSWORD) {
+      isLoggedIn = true;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminContainer').classList.add('show');
+      updateTime();
+      setInterval(updateTime, 1000);
+    } else {
+      showError('Invalid password');
+    }
+  }
+
+  function showError(msg) {
+    const errorEl = document.getElementById('errorMessage');
+    errorEl.textContent = msg;
+    errorEl.classList.add('show');
+    setTimeout(() => errorEl.classList.remove('show'), 3000);
+  }
+
+  function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+      isLoggedIn = false;
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('adminContainer').classList.remove('show');
+      document.getElementById('passwordInput').value = '';
+    }
+  }
+
+  function showSection(sectionId) {
+    document.querySelectorAll('.dashboard-section').forEach(el => el.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    
+    document.querySelectorAll('.menu-link').forEach(el => el.classList.remove('active'));
+    document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+    
+    const titles = {
+      dashboard: 'Dashboard',
+      users: 'Users',
+      leads: 'Leads Data',
+      subscriptions: 'Subscriptions',
+      content: 'Content',
+      pages: 'Pages',
+      analytics: 'Analytics',
+      settings: 'Settings'
+    };
+    document.getElementById('sectionTitle').textContent = titles[sectionId];
+  }
+
+  function openModal(modalType) {
+    document.getElementById(modalType + 'Modal').classList.add('show');
+  }
+
+  function closeModal(event, modalType) {
+    if (event && event.target.id !== modalType + 'Modal') return;
+    document.getElementById(modalType + 'Modal').classList.remove('show');
+  }
+
+  function handleAddUser(e) {
+    e.preventDefault();
+    alert('User added successfully!');
+    closeModal(null, 'addUser');
+  }
+
+  function handleEditContent(e) {
+    e.preventDefault();
+    alert('Content updated successfully!');
+    closeModal(null, 'editContent');
+  }
+
+  function handleCreatePage(e) {
+    e.preventDefault();
+    alert('Page created successfully!');
+    closeModal(null, 'createPage');
+  }
+
+  function handleImportLeads(e) {
+    e.preventDefault();
+    alert('Leads imported successfully!');
+    closeModal(null, 'importLeads');
+  }
+
+  function editUser(btn) {
+    alert('Edit user functionality');
+  }
+
+  function editPage() {
+    alert('Edit page functionality');
+  }
+
+  function updateTime() {
+    const now = new Date();
+    document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+  }
+</script>
+
+</body>
+</html>
