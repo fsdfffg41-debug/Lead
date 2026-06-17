@@ -3,861 +3,513 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MapLeads — Find Businesses Without Websites</title>
+<title>MapLeads — Find Businesses Without Websites | Google Maps Scraper</title>
+<meta name="description" content="Scrape Google Maps without an API. Find businesses with no website, extract phone numbers, addresses & emails across 40+ countries. Trusted by 12,000+ developers." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #ffffff;
-    color: #0f0f0f;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
+/* ======= PAGE-SPECIFIC STYLES ======= */
 
-  /* NAV */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #f0f0f0;
-    padding: 0 5vw;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #0f0f0f;
-    text-decoration: none;
-  }
-  .logo-dot { color: #2563eb; }
-  .logo-icon {
-    width: 32px; height: 32px;
-    background: #2563eb;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .logo-icon svg { width: 18px; height: 18px; fill: #fff; }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    text-decoration: none;
-    color: #555;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color .2s;
-  }
-  .nav-links a:hover { color: #0f0f0f; }
-  .nav-cta {
-    background: #0f0f0f;
-    color: #fff !important;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    transition: background .2s !important;
-    cursor: pointer;
-    border: none;
-  }
-  .nav-cta:hover { background: #2563eb !important; color: #fff !important; }
+/* HERO */
+.hero {
+  padding: 96px 5vw 80px;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
+}
+.hero-announce {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--blue-light); color: var(--blue);
+  font-size: 12px; font-weight: 700; padding: 6px 14px;
+  border-radius: 100px; margin-bottom: 24px; letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.hero-announce .live-dot {
+  width: 7px; height: 7px; background: var(--blue);
+  border-radius: 50%; animation: pulse 1.8s infinite;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif; font-weight: 800;
+  font-size: clamp(36px, 4.5vw, 58px);
+  letter-spacing: -0.03em; line-height: 1.05;
+  margin-bottom: 22px;
+}
+.hero h1 .accent { color: var(--blue); }
+.hero-sub {
+  font-size: 17px; color: var(--gray-500); line-height: 1.75;
+  margin-bottom: 36px; max-width: 480px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+.hero-trust {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px; color: var(--gray-500);
+}
+.trust-avatars { display: flex; }
+.trust-avatars span {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), #1d4ed8);
+  border: 2px solid #fff; display: flex; align-items: center;
+  justify-content: center; font-size: 11px; font-weight: 700; color: #fff;
+  margin-right: -8px;
+}
+.hero-stars { color: #f59e0b; font-size: 13px; margin-right: 2px; }
 
-  /* HERO */
-  .hero {
-    padding: 100px 5vw 80px;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-  }
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #eff6ff;
-    color: #2563eb;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 100px;
-    margin-bottom: 24px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    animation: fadeInDown 0.6s ease-out;
-  }
-  .hero-badge span { width: 6px; height: 6px; background: #2563eb; border-radius: 50%; display: inline-block; }
-  h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(36px, 4.5vw, 58px);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    color: #0f0f0f;
-    margin-bottom: 20px;
-    animation: fadeInUp 0.6s ease-out 0.1s both;
-  }
-  h1 em {
-    font-style: normal;
-    color: #2563eb;
-  }
-  .hero-sub {
-    font-size: 17px;
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 36px;
-    max-width: 480px;
-    animation: fadeInUp 0.6s ease-out 0.2s both;
-  }
-  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeInUp 0.6s ease-out 0.3s both; }
-  .btn-primary {
-    background: #0f0f0f;
-    color: #fff;
-    padding: 14px 28px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: background .2s, transform .15s;
-    border: none;
-    cursor: pointer;
-  }
-  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-  .btn-secondary {
-    background: #fff;
-    color: #0f0f0f;
-    padding: 14px 28px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1.5px solid #e5e5e5;
-    transition: border-color .2s, transform .15s;
-    cursor: pointer;
-  }
-  .btn-secondary:hover { border-color: #2563eb; color: #2563eb; transform: translateY(-1px); }
+/* HERO DEMO WIDGET */
+.demo-card {
+  background: var(--gray-50); border: 1px solid var(--gray-100);
+  border-radius: var(--radius-xl); padding: 24px; position: relative;
+  box-shadow: var(--shadow-lg);
+}
+.demo-bar {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+}
+.demo-bar .dots { display: flex; gap: 5px; }
+.demo-bar .dots span { width: 10px; height: 10px; border-radius: 50%; }
+.demo-bar .dots .d1 { background: #ff5f57; }
+.demo-bar .dots .d2 { background: #febc2e; }
+.demo-bar .dots .d3 { background: #28c840; }
+.demo-bar .demo-url {
+  flex: 1; background: #fff; border: 1px solid var(--gray-300);
+  border-radius: 6px; padding: 5px 12px; font-size: 12px;
+  color: var(--gray-500); font-family: monospace;
+}
+.demo-search {
+  background: #fff; border: 1.5px solid var(--gray-300);
+  border-radius: var(--radius); padding: 10px 14px;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.demo-search input {
+  flex: 1; border: none; outline: none; font-size: 13px;
+  font-family: 'Inter', sans-serif; color: var(--black); background: transparent;
+}
+.demo-search .go {
+  background: var(--blue); color: #fff; border: none;
+  border-radius: 6px; padding: 6px 14px; font-size: 12px;
+  font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background .2s;
+}
+.demo-search .go:hover { background: var(--blue-dark); }
+.demo-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip {
+  background: #fff; border: 1px solid var(--gray-300);
+  border-radius: 6px; padding: 5px 11px; font-size: 11px;
+  font-weight: 600; color: var(--gray-500); cursor: pointer; transition: var(--transition);
+}
+.chip.on { background: var(--blue); color: #fff; border-color: var(--blue); }
+.demo-results { display: flex; flex-direction: column; gap: 8px; }
+.demo-result {
+  background: #fff; border: 1px solid var(--gray-100);
+  border-radius: var(--radius); padding: 12px 14px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 6px; transition: var(--transition);
+}
+.demo-result:hover { border-color: var(--blue); box-shadow: 0 2px 12px rgba(37,99,235,.08); }
+.dr-name { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 2px; }
+.dr-cat  { font-size: 11px; color: var(--gray-500); }
+.dr-phone { font-size: 12px; color: var(--blue); font-weight: 600; text-align: right; }
+.dr-no-site {
+  display: inline-block; background: var(--amber-light);
+  color: var(--amber); font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px; text-align: right;
+}
+.demo-run {
+  width: 100%; margin-top: 14px; background: var(--black);
+  color: #fff; border: none; padding: 11px;
+  border-radius: var(--radius); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', sans-serif; transition: background .2s;
+}
+.demo-run:hover { background: var(--blue); }
+.demo-count {
+  text-align: center; font-size: 11px; color: var(--gray-500);
+  margin-top: 10px;
+}
 
-  /* HERO SEARCH DEMO */
-  .hero-demo {
-    background: #f8f9fc;
-    border: 1px solid #e8eaf0;
-    border-radius: 20px;
-    padding: 28px;
-    position: relative;
-    animation: fadeInRight 0.8s ease-out;
-  }
-  .demo-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .demo-dots { display: flex; gap: 6px; }
-  .demo-dots span { width: 10px; height: 10px; border-radius: 50%; }
-  .demo-dots span:nth-child(1) { background: #ff5f57; }
-  .demo-dots span:nth-child(2) { background: #febc2e; }
-  .demo-dots span:nth-child(3) { background: #28c840; }
-  .demo-title { font-size: 13px; color: #888; margin-left: auto; font-weight: 500; }
-  .search-box {
-    background: #fff;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .search-box input {
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #0f0f0f;
-    flex: 1;
-    background: transparent;
-    font-family: 'Inter', sans-serif;
-  }
-  .search-icon { color: #aaa; font-size: 16px; }
-  .filters-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  .filter-chip {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #444;
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .filter-chip.active { background: #2563eb; color: #fff; border-color: #2563eb; }
-  .result-cards { display: flex; flex-direction: column; gap: 10px; }
-  .result-card {
-    background: #fff;
-    border: 1px solid #e8eaf0;
-    border-radius: 10px;
-    padding: 14px 16px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-    transition: border-color .2s, box-shadow .2s;
-    cursor: pointer;
-  }
-  .result-card:hover { border-color: #2563eb; box-shadow: 0 4px 20px rgba(37,99,235,0.08); }
-  .result-card .biz-name { font-size: 14px; font-weight: 600; color: #0f0f0f; margin-bottom: 3px; }
-  .result-card .biz-cat { font-size: 12px; color: #888; }
-  .result-card .biz-phone { font-size: 13px; color: #2563eb; font-weight: 500; text-align: right; }
-  .result-card .no-site {
-    display: inline-block;
-    background: #fef3cd;
-    color: #92610a;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 4px;
-    text-align: right;
-    white-space: nowrap;
-  }
-  .demo-run-btn {
-    width: 100%;
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: 'Inter', sans-serif;
-    transition: background .2s;
-  }
-  .demo-run-btn:hover { background: #1d4ed8; }
-  .demo-stat {
-    margin-top: 14px;
-    font-size: 12px;
-    color: #888;
-    text-align: center;
-  }
-  .demo-stat strong { color: #2563eb; }
+/* LOGOS STRIP */
+.logos-strip {
+  padding: 32px 5vw;
+  border-top: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-100);
+}
+.logos-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; gap: 40px; flex-wrap: wrap;
+}
+.logos-label { font-size: 12px; font-weight: 600; color: var(--gray-300); text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
+.logos-row { display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+.logos-row span { font-size: 15px; font-weight: 700; color: var(--gray-300); letter-spacing: -.01em; }
 
-  /* STATS */
-  .stats-bar {
-    border-top: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
-    padding: 28px 5vw;
-  }
-  .stats-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .stat-item { text-align: center; }
-  .stat-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #0f0f0f;
-    display: block;
-  }
-  .stat-label { font-size: 13px; color: #888; font-weight: 500; }
+/* HOW IT WORKS */
+.steps { padding: 96px 5vw; }
+.steps-inner { max-width: 1200px; margin: 0 auto; }
+.steps-head { max-width: 560px; margin-bottom: 64px; }
+.steps-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 32px;
+}
+.step-card {
+  padding: 36px; background: #fff;
+  border: 1px solid var(--gray-100); border-radius: var(--radius-lg);
+  transition: var(--transition); position: relative;
+}
+.step-card:hover { border-color: var(--blue); box-shadow: var(--shadow); transform: translateY(-3px); }
+.step-num {
+  width: 48px; height: 48px; background: var(--blue-light);
+  border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; font-family: 'Syne', sans-serif;
+  font-size: 20px; font-weight: 800; color: var(--blue); margin-bottom: 20px;
+}
+.step-card h3 { font-size: 18px; margin-bottom: 10px; }
+.step-card p { font-size: 14px; }
+.step-arrow {
+  position: absolute; right: -18px; top: 40px;
+  color: var(--gray-300); font-size: 22px; z-index: 1;
+}
 
-  /* HOW IT WORKS */
-  section { padding: 100px 5vw; }
-  .section-inner { max-width: 1200px; margin: 0 auto; }
-  .section-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .eyebrow-line { width: 24px; height: 2px; background: #2563eb; }
-  .eyebrow-text { font-size: 12px; font-weight: 700; color: #2563eb; letter-spacing: 0.08em; text-transform: uppercase; }
-  h2 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(28px, 3vw, 42px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #0f0f0f;
-    margin-bottom: 16px;
-    line-height: 1.15;
-  }
-  .section-sub {
-    font-size: 16px;
-    color: #666;
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 60px;
-  }
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 32px;
-  }
-  .step-card {
-    padding: 32px 28px;
-    border: 1px solid #f0f0f0;
-    border-radius: 16px;
-    position: relative;
-    background: #fff;
-    transition: border-color .2s, transform .2s;
-  }
-  .step-card:hover { border-color: #2563eb; transform: translateY(-4px); }
-  .step-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    color: #2563eb;
-    letter-spacing: 0.1em;
-    margin-bottom: 16px;
-    display: block;
-  }
-  .step-icon {
-    width: 48px; height: 48px;
-    background: #eff6ff;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-    font-size: 22px;
-  }
-  .step-card h3 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: #0f0f0f;
-  }
-  .step-card p { font-size: 14px; color: #666; line-height: 1.7; }
+/* FEATURES GRID */
+.features { padding: 96px 5vw; background: var(--gray-50); }
+.features-inner { max-width: 1200px; margin: 0 auto; }
+.features-head { max-width: 560px; margin-bottom: 64px; }
+.features-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 2px;
+  background: var(--gray-100); border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.feat-card {
+  background: #fff; padding: 36px;
+  transition: var(--transition);
+}
+.feat-card:hover { background: var(--blue-light); }
+.feat-icon {
+  width: 44px; height: 44px; background: var(--blue-light);
+  border-radius: 10px; display: flex; align-items: center;
+  justify-content: center; font-size: 20px; margin-bottom: 18px;
+}
+.feat-card h3 { font-size: 16px; margin-bottom: 8px; }
+.feat-card p  { font-size: 13px; }
 
-  /* FEATURES */
-  .features-section { background: #f8f9fc; }
-  .features-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-  }
-  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 20px; }
-  .feature-item { display: flex; gap: 16px; align-items: flex-start; }
-  .feature-check {
-    width: 24px; height: 24px;
-    background: #eff6ff;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-    font-size: 13px;
-    color: #2563eb;
-    font-weight: 700;
-  }
-  .feature-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .feature-item p { font-size: 13px; color: #666; line-height: 1.6; }
+/* COUNTRIES */
+.countries { padding: 96px 5vw; }
+.countries-inner { max-width: 1200px; margin: 0 auto; }
+.countries-head { max-width: 560px; margin-bottom: 48px; }
+.country-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;
+}
+.country-card {
+  background: var(--gray-50); border: 1px solid var(--gray-100);
+  border-radius: var(--radius); padding: 16px 18px;
+  display: flex; align-items: center; gap: 10px;
+  transition: var(--transition); cursor: default;
+}
+.country-card:hover { border-color: var(--blue); background: var(--blue-light); }
+.cf { font-size: 22px; }
+.cn { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.more-countries {
+  grid-column: 1/-1; text-align: center; padding: 20px;
+  font-size: 14px; color: var(--gray-500);
+}
 
-  /* DATA PREVIEW */
-  .data-preview {
-    background: #0f0f0f;
-    border-radius: 16px;
-    overflow: hidden;
-    font-family: 'Inter', monospace;
-  }
-  .data-preview-header {
-    background: #1a1a1a;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .data-preview-header span { font-size: 12px; color: #666; }
-  .data-preview pre {
-    padding: 24px;
-    font-size: 12px;
-    line-height: 1.9;
-    color: #a3b3cc;
-    overflow-x: auto;
-  }
-  .json-key { color: #79b8ff; }
-  .json-str { color: #9ecbff; }
-  .json-num { color: #f97583; }
-  .json-bool { color: #fdab49; }
+/* API CODE BLOCK */
+.api-section { padding: 96px 5vw; background: var(--gray-50); }
+.api-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+.api-text .eyebrow { margin-bottom: 16px; }
+.api-text h2 { margin-bottom: 16px; }
+.api-text p  { margin-bottom: 24px; }
+.api-feats { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+.api-feats li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; color: var(--gray-700);
+}
+.api-feats li::before {
+  content: '✓'; color: var(--blue); font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.code-window {
+  background: #0f1117; border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-lg);
+}
+.code-window-bar {
+  background: #1c2030; padding: 12px 16px;
+  display: flex; align-items: center; gap: 6px;
+}
+.code-window-bar .d1 { background:#ff5f57; }
+.code-window-bar .d2 { background:#febc2e; }
+.code-window-bar .d3 { background:#28c840; }
+.code-window-bar span { width: 10px; height: 10px; border-radius: 50%; }
+.code-window-bar .fname {
+  font-size: 12px; color: rgba(255,255,255,.35);
+  font-family: monospace; margin-left: 8px;
+}
+.code-body {
+  padding: 24px; font-family: 'Courier New', monospace;
+  font-size: 13px; line-height: 1.9; color: #a3b3cc;
+  white-space: pre;
+}
+.kw   { color: #c792ea; }
+.str  { color: #c3e88d; }
+.fn   { color: #82aaff; }
+.cmt  { color: #546e7a; }
+.num  { color: #f78c6c; }
 
-  /* COUNTRIES */
-  .countries-section {}
-  .countries-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    margin-top: 40px;
-  }
-  .country-card {
-    background: #fff;
-    border: 1px solid #f0f0f0;
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-    transition: border-color .2s, transform .2s;
-    cursor: default;
-  }
-  .country-card:hover { border-color: #2563eb; transform: translateY(-2px); }
-  .country-flag { font-size: 28px; display: block; margin-bottom: 6px; }
-  .country-name { font-size: 13px; font-weight: 600; color: #333; }
-  .country-count { font-size: 11px; color: #888; margin-top: 2px; }
-  .more-countries {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 14px;
-    color: #888;
-  }
-  .more-countries strong { color: #2563eb; cursor: pointer; }
+/* PRICING */
+.pricing { padding: 96px 5vw; }
+.pricing-inner { max-width: 1100px; margin: 0 auto; }
+.pricing-head { max-width: 560px; margin-bottom: 56px; }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+}
+.plan {
+  border: 1.5px solid var(--gray-100); border-radius: var(--radius-xl);
+  padding: 36px; position: relative; transition: var(--transition);
+}
+.plan:hover { border-color: var(--blue); box-shadow: var(--shadow); }
+.plan.pop { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37,99,235,.07); }
+.plan-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--blue); color: #fff; font-size: 11px; font-weight: 700;
+  padding: 4px 16px; border-radius: 100px; white-space: nowrap;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.plan-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gray-500); margin-bottom: 16px; }
+.plan-price { margin-bottom: 4px; }
+.plan-price .amt {
+  font-family: 'Syne', sans-serif; font-size: 48px;
+  font-weight: 800; color: var(--black); letter-spacing: -0.03em;
+}
+.plan-price .cur { font-size: 24px; font-weight: 700; vertical-align: top; margin-top: 12px; display: inline-block; }
+.plan-period { font-size: 13px; color: var(--gray-500); margin-bottom: 28px; }
+.plan-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.plan-feats li {
+  font-size: 14px; color: var(--gray-700);
+  display: flex; align-items: center; gap: 9px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--gray-100);
+}
+.plan-feats li:last-child { border-bottom: none; padding-bottom: 0; }
+.plan-feats li::before { content: '✓'; color: var(--blue); font-weight: 700; flex-shrink: 0; }
 
-  /* API DOCS PREVIEW */
-  .api-section { background: #f8f9fc; }
-  .api-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: 60px;
-    align-items: start;
-  }
-  .endpoint-list { list-style: none; }
-  .endpoint-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 0;
-    border-bottom: 1px solid #eee;
-  }
-  .method-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-family: monospace;
-    flex-shrink: 0;
-  }
-  .method-get { background: #d1fae5; color: #065f46; }
-  .method-post { background: #dbeafe; color: #1d4ed8; }
-  .endpoint-path { font-size: 13px; font-family: monospace; color: #0f0f0f; }
-  .endpoint-desc { font-size: 12px; color: #888; margin-left: auto; }
+/* TESTIMONIALS */
+.testimonials { padding: 96px 5vw; background: var(--gray-50); }
+.testimonials-inner { max-width: 1200px; margin: 0 auto; }
+.testimonials-head { max-width: 560px; margin-bottom: 56px; }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.testi {
+  background: #fff; border: 1px solid var(--gray-100);
+  border-radius: var(--radius-lg); padding: 32px; transition: var(--transition);
+}
+.testi:hover { box-shadow: var(--shadow); }
+.testi-stars { color: #f59e0b; font-size: 15px; margin-bottom: 16px; }
+.testi-quote { font-size: 15px; color: var(--gray-700); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), #1d4ed8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.testi-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.testi-role { font-size: 12px; color: var(--gray-500); }
 
-  /* PRICING */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-    margin-top: 60px;
-  }
-  .price-card {
-    border: 1px solid #e5e5e5;
-    border-radius: 16px;
-    padding: 36px 32px;
-    background: #fff;
-    transition: border-color .2s;
-  }
-  .price-card.featured {
-    border: 2px solid #2563eb;
-    position: relative;
-  }
-  .featured-badge {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2563eb;
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 16px;
-    border-radius: 100px;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-  }
-  .plan-name { font-size: 13px; font-weight: 700; color: #888; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
-  .plan-price {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: #0f0f0f;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .plan-price sup { font-size: 22px; vertical-align: top; margin-top: 8px; }
-  .plan-period { font-size: 13px; color: #888; margin-bottom: 28px; }
-  .plan-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
-  .plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #444; }
-  .plan-features li::before { content: '✓'; color: #2563eb; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+/* STATS BAR */
+.stats-bar { padding: 72px 5vw; }
+.stats-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 24px;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Syne', sans-serif; font-size: 44px;
+  font-weight: 800; color: var(--black); letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+.stat-num .accent { color: var(--blue); }
+.stat-label { font-size: 14px; color: var(--gray-500); }
 
-  /* TESTIMONIALS */
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    margin-top: 60px;
-  }
-  .testimonial-card {
-    background: #fff;
-    border: 1px solid #f0f0f0;
-    border-radius: 16px;
-    padding: 28px;
-    transition: border-color .2s;
-  }
-  .testimonial-card:hover { border-color: #2563eb; }
-  .stars { color: #f59e0b; font-size: 14px; margin-bottom: 14px; letter-spacing: 2px; }
-  .testimonial-text { font-size: 14px; color: #444; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
-  .reviewer { display: flex; align-items: center; gap: 12px; }
-  .reviewer-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: #eff6ff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px;
-    font-weight: 700;
-    color: #2563eb;
-    flex-shrink: 0;
-  }
-  .reviewer-name { font-size: 14px; font-weight: 600; }
-  .reviewer-role { font-size: 12px; color: #888; }
+/* CTA BANNER */
+.cta-banner {
+  padding: 80px 5vw;
+  background: var(--black);
+  text-align: center;
+}
+.cta-banner h2 {
+  font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800; color: #fff; margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+.cta-banner p { color: rgba(255,255,255,.55); margin-bottom: 36px; font-size: 17px; }
+.cta-banner .btn-blue { font-size: 16px; padding: 16px 36px; }
+.cta-sub { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.35); }
 
-  /* CTA */
-  .cta-section {
-    background: #0f0f0f;
-    padding: 100px 5vw;
-    text-align: center;
-  }
-  .cta-section h2 { color: #fff; margin-bottom: 16px; }
-  .cta-section p { color: #888; font-size: 16px; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
-  .cta-section .btn-primary { background: #2563eb; font-size: 16px; padding: 16px 36px; }
-  .cta-section .btn-primary:hover { background: #1d4ed8; }
-
-  /* MODAL */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 200;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.3s ease-out;
-  }
-  .modal.show { display: flex; align-items: center; justify-content: center; }
-  .modal-content {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    animation: slideUp 0.3s ease-out;
-  }
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  .modal-header h3 { font-size: 24px; font-weight: 700; }
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: #888;
-    transition: color 0.2s;
-  }
-  .close-btn:hover { color: #0f0f0f; }
-  .form-group {
-    margin-bottom: 16px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #0f0f0f;
-  }
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    transition: border-color 0.2s;
-  }
-  .form-group input:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: #2563eb;
-  }
-  .form-group textarea { resize: vertical; min-height: 100px; }
-  .form-submit {
-    width: 100%;
-    background: #2563eb;
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 16px;
-  }
-  .form-submit:hover { background: #1d4ed8; }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid #f0f0f0;
-    padding: 48px 5vw 32px;
-  }
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .footer-top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 48px;
-    margin-bottom: 48px;
-  }
-  .footer-brand p { font-size: 13px; color: #888; margin-top: 12px; max-width: 240px; line-height: 1.7; }
-  .footer-col h5 { font-size: 12px; font-weight: 700; color: #0f0f0f; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-col ul li a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; cursor: pointer; }
-  .footer-col ul li a:hover { color: #2563eb; }
-  .footer-bottom {
-    border-top: 1px solid #f0f0f0;
-    padding-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: #aaa;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  /* MISC */
-  .tag {
-    display: inline-block;
-    background: #f0f4ff;
-    color: #2563eb;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 4px;
-  }
-  .divider {
-    height: 1px;
-    background: #f0f0f0;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .success-message {
-    display: none;
-    background: #d1fae5;
-    color: #065f46;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-top: 16px;
-    font-size: 14px;
-    animation: fadeIn 0.3s ease-out;
-  }
-  .success-message.show { display: block; }
-
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @media (max-width: 768px) {
-    .hero { grid-template-columns: 1fr; gap: 40px; padding: 60px 5vw; }
-    .features-grid { grid-template-columns: 1fr; }
-    .api-grid { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .nav-links { display: none; }
-    .stats-inner { justify-content: center; }
-    .footer-top { grid-template-columns: 1fr; }
-    .modal-content { width: 95%; padding: 30px 20px; }
-  }
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .steps-grid,
+  .features-grid { grid-template-columns: repeat(2,1fr); }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 480px; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .stats-inner { grid-template-columns: repeat(2,1fr); }
+  .step-arrow { display: none; }
+}
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; padding: 60px 5vw 48px; gap: 40px; }
+  .api-inner { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .country-grid { grid-template-columns: repeat(2,1fr); }
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
-  <a href="#" class="logo">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg>
-    </div>
-    MapLeads<span class="logo-dot">.</span>io
-  </a>
-  <ul class="nav-links">
-    <li><a href="#how-it-works">How it works</a></li>
-    <li><a href="#countries">Countries</a></li>
-    <li><a href="#api">API</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><button class="nav-cta" onclick="openModal('signup')">Start free</button></li>
-  </ul>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      MapLeads<span class="dot">.</span>io
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="docs.html">Docs</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="admin.html" class="nav-cta">Dashboard →</a></li>
+    </ul>
+    <button class="nav-burger" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- HERO -->
-<section style="padding: 0;">
+<section>
   <div class="hero">
-    <div>
-      <div class="hero-badge"><span></span> Live Google Maps data</div>
-      <h1>Find businesses <em>without websites</em> in any country</h1>
-      <p class="hero-sub">MapLeads scrapes Google Maps in real time to surface offline businesses — complete with phone numbers, addresses, categories, and ratings — across 30+ countries. Build your outreach list in seconds.</p>
+    <div class="hero-left anim-up">
+      <div class="hero-announce">
+        <span class="live-dot"></span>
+        Now covering 40+ countries
+      </div>
+      <h1>Find businesses <span class="accent">without websites</span> anywhere on Earth</h1>
+      <p class="hero-sub">Scrape Google Maps directly — no API key needed. Extract phone numbers, addresses, emails and business details from 50M+ offline businesses ready for your pitch.</p>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="openModal('signup')">Start scraping free →</button>
-        <a href="#api" class="btn-secondary">View API docs</a>
+        <button class="btn btn-primary btn-lg" onclick="openModal('signup')">Start for free →</button>
+        <a href="docs.html" class="btn btn-outline btn-lg">View API docs</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-avatars">
+          <span>AC</span><span>SM</span><span>JK</span><span>DP</span>
+        </div>
+        <span>
+          <span class="hero-stars">★★★★★</span>
+          Trusted by <strong>12,000+</strong> developers &amp; agencies
+        </span>
       </div>
     </div>
-    <div class="hero-demo">
-      <div class="demo-header">
-        <div class="demo-dots"><span></span><span></span><span></span></div>
-        <span class="demo-title">MapLeads search</span>
-      </div>
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" value="restaurants Berlin, Germany" readonly />
-      </div>
-      <div class="filters-row">
-        <div class="filter-chip active" onclick="toggleFilter(this)">No website</div>
-        <div class="filter-chip" onclick="toggleFilter(this)">Has phone</div>
-        <div class="filter-chip" onclick="toggleFilter(this)">4★+</div>
-        <div class="filter-chip" onclick="toggleFilter(this)">Open now</div>
-      </div>
-      <div class="result-cards">
-        <div class="result-card">
-          <div>
-            <div class="biz-name">Gasthaus Zur Linde</div>
-            <div class="biz-cat">Restaurant · Mitte, Berlin</div>
+    <div class="hero-right anim-up anim-up-d2">
+      <div class="demo-card">
+        <div class="demo-bar">
+          <div class="dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <div class="demo-url">mapleads.io/scrape</div>
+        </div>
+        <div class="demo-search">
+          <span>🔍</span>
+          <input type="text" value="restaurants in Berlin, Germany" id="demoInput" />
+          <button class="go" onclick="runLiveDemo()">Scrape</button>
+        </div>
+        <div class="demo-filters">
+          <span class="chip on" onclick="toggleChip(this)">No website</span>
+          <span class="chip on" onclick="toggleChip(this)">Has phone</span>
+          <span class="chip" onclick="toggleChip(this)">Rating 4+</span>
+          <span class="chip" onclick="toggleChip(this)">Email found</span>
+        </div>
+        <div class="demo-results" id="demoResults">
+          <div class="demo-result">
+            <div><div class="dr-name">Gasthaus Zur Linde</div><div class="dr-cat">German Restaurant · Berlin Mitte</div></div>
+            <div><div class="dr-phone">+49 30 2456 7890</div><div class="dr-no-site">NO WEBSITE</div></div>
           </div>
-          <div>
-            <div class="biz-phone">+49 30 2456 7890</div>
-            <div class="no-site">No website</div>
+          <div class="demo-result">
+            <div><div class="dr-name">Pizzeria Da Marco</div><div class="dr-cat">Italian · Prenzlauer Berg</div></div>
+            <div><div class="dr-phone">+49 30 4411 2233</div><div class="dr-no-site">NO WEBSITE</div></div>
+          </div>
+          <div class="demo-result">
+            <div><div class="dr-name">Café Morgenrot</div><div class="dr-cat">Café · Friedrichshain</div></div>
+            <div><div class="dr-phone">+49 30 9987 0044</div><div class="dr-no-site">NO WEBSITE</div></div>
           </div>
         </div>
-        <div class="result-card">
-          <div>
-            <div class="biz-name">Bäckerei Schmidt</div>
-            <div class="biz-cat">Bakery · Prenzlauer Berg</div>
-          </div>
-          <div>
-            <div class="biz-phone">+49 30 4412 9981</div>
-            <div class="no-site">No website</div>
-          </div>
-        </div>
-        <div class="result-card">
-          <div>
-            <div class="biz-name">Friedrichshain Imbiss</div>
-            <div class="biz-cat">Fast food · Friedrichshain</div>
-          </div>
-          <div>
-            <div class="biz-phone">+49 30 9834 1120</div>
-            <div class="no-site">No website</div>
-          </div>
-        </div>
+        <button class="demo-run" onclick="runLiveDemo()">▶ Run live scrape</button>
+        <div class="demo-count" id="demoCount">Showing 3 of <strong>2,847</strong> results · Export to CSV</div>
       </div>
-      <button class="demo-run-btn" onclick="runDemo()">⚡ Run scrape — export 500 results</button>
-      <p class="demo-stat">Found <strong>2,847 businesses</strong> without websites in Berlin</p>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div class="stat-item"><span class="stat-num">50M+</span><span class="stat-label">Businesses indexed</span></div>
-    <div class="stat-item"><span class="stat-num">30+</span><span class="stat-label">Countries supported</span></div>
-    <div class="stat-item"><span class="stat-num">99.2%</span><span class="stat-label">Phone accuracy</span></div>
-    <div class="stat-item"><span class="stat-num">24/7</span><span class="stat-label">Real-time scraping</span></div>
-    <div class="stat-item"><span class="stat-num">12k+</span><span class="stat-label">Developers using API</span></div>
+<!-- LOGOS -->
+<div class="logos-strip">
+  <div class="logos-inner">
+    <span class="logos-label">Used by teams at</span>
+    <div class="logos-row">
+      <span>Accenture</span>
+      <span>Webflow</span>
+      <span>Pipedrive</span>
+      <span>HubSpot</span>
+      <span>Fiverr</span>
+      <span>Freelancers Union</span>
+    </div>
   </div>
 </div>
 
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">50M<span class="accent">+</span></div>
+      <div class="stat-label">Businesses indexed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">40<span class="accent">+</span></div>
+      <div class="stat-label">Countries covered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">99<span class="accent">%</span></div>
+      <div class="stat-label">Phone number accuracy</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">12K<span class="accent">+</span></div>
+      <div class="stat-label">Active developers</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
 <!-- HOW IT WORKS -->
-<section id="how-it-works">
-  <div class="section-inner">
-    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">How it works</span></div>
-    <h2>From search to leads in<br>under 60 seconds</h2>
-    <p class="section-sub">MapLeads automates the entire discovery pipeline — no API keys needed, no rate limits, no setup friction.</p>
+<section class="steps">
+  <div class="steps-inner">
+    <div class="steps-head">
+      <div class="eyebrow">How it works</div>
+      <h2>From search to leads in under 60 seconds</h2>
+    </div>
     <div class="steps-grid">
       <div class="step-card">
-        <span class="step-num">STEP 01</span>
-        <div class="step-icon">🗺️</div>
-        <h3>Enter your search</h3>
-        <p>Type any business category and location. We support city, region, postal code, or country-level searches across 30+ countries.</p>
+        <div class="step-num">01</div>
+        <h3>Pick a category &amp; location</h3>
+        <p>Type any business type — restaurants, plumbers, dentists — and any city, region, or country. We search across 40+ countries instantly.</p>
+        <span class="step-arrow">→</span>
       </div>
       <div class="step-card">
-        <span class="step-num">STEP 02</span>
-        <div class="step-icon">🔎</div>
-        <h3>We scrape Google Maps</h3>
-        <p>Our engine fetches live Google Maps results, bypassing restrictions without any API key. Always fresh, never cached from months ago.</p>
+        <div class="step-num">02</div>
+        <h3>Apply smart filters</h3>
+        <p>Filter by "no website," has phone number, minimum rating, or email found. Zero in on exactly the offline businesses you want to pitch.</p>
+        <span class="step-arrow">→</span>
       </div>
       <div class="step-card">
-        <span class="step-num">STEP 03</span>
-        <div class="step-icon">🚫</div>
-        <h3>Filter: no website only</h3>
-        <p>We detect which businesses are missing a website — a massive untapped market for web agencies, SaaS tools, and outreach campaigns.</p>
-      </div>
-      <div class="step-card">
-        <span class="step-num">STEP 04</span>
-        <div class="step-icon">📤</div>
-        <h3>Export clean data</h3>
-        <p>Download as CSV or JSON with name, phone, address, category, rating, review count, GPS coordinates, and website status.</p>
+        <div class="step-num">03</div>
+        <h3>Export &amp; close deals</h3>
+        <p>Download clean CSV, JSON, or Excel files. Connect to your CRM via webhook. Start calling and closing the same day.</p>
       </div>
     </div>
   </div>
@@ -866,231 +518,200 @@
 <div class="divider"></div>
 
 <!-- FEATURES -->
-<section id="features" class="features-section">
-  <div class="section-inner">
+<section class="features">
+  <div class="features-inner">
+    <div class="features-head">
+      <div class="eyebrow">Features</div>
+      <h2>Everything you need. Nothing you don't.</h2>
+    </div>
     <div class="features-grid">
-      <div>
-        <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Features</span></div>
-        <h2>Everything a developer needs, nothing they don't</h2>
-        <p class="section-sub" style="margin-bottom: 36px;">Built API-first. Integrate MapLeads into your outreach tool, CRM, or SaaS product in minutes.</p>
-        <ul class="feature-list">
-          <li class="feature-item">
-            <div class="feature-check">✓</div>
-            <div>
-              <h4>No API key required</h4>
-              <p>We handle all Google Maps access internally. You just call our clean REST API.</p>
-            </div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-check">✓</div>
-            <div>
-              <h4>Phone number extraction</h4>
-              <p>Verified phone numbers formatted to international E.164 standard, ready for outreach.</p>
-            </div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-check">✓</div>
-            <div>
-              <h4>Website presence detection</h4>
-              <p>Accurately flags businesses with no website, outdated domain, or broken link.</p>
-            </div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-check">✓</div>
-            <div>
-              <h4>Bulk CSV/JSON export</h4>
-              <p>Export up to 50,000 results per job. Schedule recurring scrapes via webhook.</p>
-            </div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-check">✓</div>
-            <div>
-              <h4>GPS coordinates included</h4>
-              <p>Latitude and longitude for every result. Plot on your own maps, filter by radius.</p>
-            </div>
-          </li>
-          <li class="feature-item">
-            <div class="feature-check">✓</div>
-            <div>
-              <h4>Webhook notifications</h4>
-              <p>Get notified when a scrape job completes. Pipe results directly into your workflow.</p>
-            </div>
-          </li>
-        </ul>
+      <div class="feat-card">
+        <div class="feat-icon">🗺️</div>
+        <h3>Google Maps Scraper</h3>
+        <p>Full Google Maps scraping without needing any API key. Direct data extraction at scale.</p>
       </div>
-      <div>
-        <div class="data-preview">
-          <div class="data-preview-header">
-            <span>● response.json</span>
-          </div>
-          <pre>
-<span class="json-key">"results"</span>: [
-  {
-    <span class="json-key">"name"</span>: <span class="json-str">"Gasthaus Zur Linde"</span>,
-    <span class="json-key">"category"</span>: <span class="json-str">"Restaurant"</span>,
-    <span class="json-key">"phone"</span>: <span class="json-str">"+49 30 2456 7890"</span>,
-    <span class="json-key">"address"</span>: <span class="json-str">"Lindenstr. 14, Berlin"</span>,
-    <span class="json-key">"country"</span>: <span class="json-str">"DE"</span>,
-    <span class="json-key">"rating"</span>: <span class="json-num">4.3</span>,
-    <span class="json-key">"reviews"</span>: <span class="json-num">187</span>,
-    <span class="json-key">"has_website"</span>: <span class="json-bool">false</span>,
-    <span class="json-key">"website_url"</span>: <span class="json-bool">null</span>,
-    <span class="json-key">"lat"</span>: <span class="json-num">52.5061</span>,
-    <span class="json-key">"lng"</span>: <span class="json-num">13.3954</span>
-  }
-]</pre>
-        </div>
+      <div class="feat-card">
+        <div class="feat-icon">📵</div>
+        <h3>No-Website Filter</h3>
+        <p>Instantly isolate businesses with zero online presence — the warmest leads for web services.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📞</div>
+        <h3>Verified Phone Numbers</h3>
+        <p>99%+ accuracy on phone extraction. Real numbers that actually connect.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📧</div>
+        <h3>Email Discovery</h3>
+        <p>Where available, we find and validate email addresses directly from business listings.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <h3>Real-Time Results</h3>
+        <p>Sub-2s response time. Fresh data pulled live from Google Maps — not stale databases.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔗</div>
+        <h3>REST API + Webhooks</h3>
+        <p>Plug directly into your stack. Full REST API, webhook delivery, and SDK for Node.js &amp; Python.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📤</div>
+        <h3>CSV / JSON / Excel Export</h3>
+        <p>One-click export in any format. Import straight into Sheets, Airtable, or your CRM.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⏱️</div>
+        <h3>Bulk Job Scheduler</h3>
+        <p>Schedule recurring scrapes. Automate weekly lead pulls without lifting a finger.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🌍</div>
+        <h3>40+ Countries</h3>
+        <p>Germany, UK, USA, Italy, France, Netherlands, Canada, Spain, Australia and 31 more.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- COUNTRIES -->
-<section id="countries">
-  <div class="section-inner">
-    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Coverage</span></div>
-    <h2>Works across 30+ countries</h2>
-    <p class="section-sub">From major economies to emerging markets — we cover the places where offline businesses are most plentiful.</p>
-    <div class="countries-grid">
-      <div class="country-card"><span class="country-flag">🇩🇪</span><div class="country-name">Germany</div><div class="country-count">3.2M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇮🇹</span><div class="country-name">Italy</div><div class="country-count">2.8M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇫🇷</span><div class="country-name">France</div><div class="country-count">3.1M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇬🇧</span><div class="country-name">United Kingdom</div><div class="country-count">2.9M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇺🇸</span><div class="country-name">United States</div><div class="country-count">12.4M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇨🇦</span><div class="country-name">Canada</div><div class="country-count">1.8M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇳🇱</span><div class="country-name">Netherlands</div><div class="country-count">890K businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇪🇸</span><div class="country-name">Spain</div><div class="country-count">2.4M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇵🇹</span><div class="country-name">Portugal</div><div class="country-count">710K businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇧🇪</span><div class="country-name">Belgium</div><div class="country-count">640K businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇦🇺</span><div class="country-name">Australia</div><div class="country-count">1.1M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇯🇵</span><div class="country-name">Japan</div><div class="country-count">4.2M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇧🇷</span><div class="country-name">Brazil</div><div class="country-count">5.1M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇲🇽</span><div class="country-name">Mexico</div><div class="country-count">3.4M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇮🇳</span><div class="country-name">India</div><div class="country-count">9.8M businesses</div></div>
-      <div class="country-card"><span class="country-flag">🇿🇦</span><div class="country-name">South Africa</div><div class="country-count">820K businesses</div></div>
+<section class="countries">
+  <div class="countries-inner">
+    <div class="countries-head">
+      <div class="eyebrow">Coverage</div>
+      <h2>40+ countries and growing</h2>
+      <p>Request any country we don't cover yet — our team adds new regions every month.</p>
     </div>
-    <p class="more-countries">+ 14 more countries. <a href="javascript:openModal('request')" style="text-decoration: none; color: inherit;"><strong>Request a country</strong></a> and we'll add it within 48 hours.</p>
+    <div class="country-grid">
+      <div class="country-card"><span class="cf">🇩🇪</span><span class="cn">Germany</span></div>
+      <div class="country-card"><span class="cf">🇬🇧</span><span class="cn">United Kingdom</span></div>
+      <div class="country-card"><span class="cf">🇺🇸</span><span class="cn">United States</span></div>
+      <div class="country-card"><span class="cf">🇫🇷</span><span class="cn">France</span></div>
+      <div class="country-card"><span class="cf">🇮🇹</span><span class="cn">Italy</span></div>
+      <div class="country-card"><span class="cf">🇳🇱</span><span class="cn">Netherlands</span></div>
+      <div class="country-card"><span class="cf">🇨🇦</span><span class="cn">Canada</span></div>
+      <div class="country-card"><span class="cf">🇪🇸</span><span class="cn">Spain</span></div>
+      <div class="country-card"><span class="cf">🇦🇺</span><span class="cn">Australia</span></div>
+      <div class="country-card"><span class="cf">🇵🇹</span><span class="cn">Portugal</span></div>
+      <div class="country-card"><span class="cf">🇧🇪</span><span class="cn">Belgium</span></div>
+      <div class="country-card"><span class="cf">🇦🇹</span><span class="cn">Austria</span></div>
+      <div class="country-card"><span class="cf">🇨🇭</span><span class="cn">Switzerland</span></div>
+      <div class="country-card"><span class="cf">🇸🇪</span><span class="cn">Sweden</span></div>
+      <div class="country-card"><span class="cf">🇵🇱</span><span class="cn">Poland</span></div>
+      <div class="country-card"><span class="cf">🇧🇷</span><span class="cn">Brazil</span></div>
+      <div class="country-card"><span class="cf">🇮🇳</span><span class="cn">India</span></div>
+      <div class="country-card"><span class="cf">🇯🇵</span><span class="cn">Japan</span></div>
+      <div class="country-card"><span class="cf">🇰🇷</span><span class="cn">South Korea</span></div>
+      <div class="country-card"><span class="cf">🇲🇽</span><span class="cn">Mexico</span></div>
+      <div class="country-card"><span class="cf">🇿🇦</span><span class="cn">South Africa</span></div>
+      <div class="country-card"><span class="cf">🇦🇪</span><span class="cn">UAE</span></div>
+      <p class="more-countries">+ 18 more countries. <a href="contact.html" style="color: var(--blue); font-weight:600;">Request a country →</a></p>
+    </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- API DOCS -->
-<section id="api" class="api-section">
-  <div class="section-inner">
-    <div class="api-grid">
-      <div>
-        <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Developer API</span></div>
-        <h2>REST API. Clean endpoints. Zero headaches.</h2>
-        <p class="section-sub" style="margin-bottom: 36px;">Integrate MapLeads into your stack in an afternoon. Full OpenAPI spec, SDKs for Node, Python, and PHP, and response times under 2s.</p>
-        <ul class="endpoint-list">
-          <li class="endpoint-item">
-            <span class="method-badge method-get">GET</span>
-            <span class="endpoint-path">/v1/search</span>
-            <span class="endpoint-desc">Search businesses</span>
-          </li>
-          <li class="endpoint-item">
-            <span class="method-badge method-get">GET</span>
-            <span class="endpoint-path">/v1/business/{id}</span>
-            <span class="endpoint-desc">Get full details</span>
-          </li>
-          <li class="endpoint-item">
-            <span class="method-badge method-post">POST</span>
-            <span class="endpoint-path">/v1/bulk</span>
-            <span class="endpoint-desc">Start bulk scrape job</span>
-          </li>
-          <li class="endpoint-item">
-            <span class="method-badge method-get">GET</span>
-            <span class="endpoint-path">/v1/jobs/{id}</span>
-            <span class="endpoint-desc">Check job status</span>
-          </li>
-          <li class="endpoint-item">
-            <span class="method-badge method-get">GET</span>
-            <span class="endpoint-path">/v1/export/{id}</span>
-            <span class="endpoint-desc">Download results</span>
-          </li>
-          <li class="endpoint-item">
-            <span class="method-badge method-post">POST</span>
-            <span class="endpoint-path">/v1/webhooks</span>
-            <span class="endpoint-desc">Register webhook</span>
-          </li>
-        </ul>
+<!-- API -->
+<section class="api-section">
+  <div class="api-inner">
+    <div class="api-text">
+      <div class="eyebrow">Developer API</div>
+      <h2>Plug it into your stack in minutes</h2>
+      <p>Full REST API with SDKs for Node.js and Python. Clean JSON responses, webhook support, and bulk job scheduling — everything a developer needs.</p>
+      <ul class="api-feats">
+        <li>No Google Maps API key required</li>
+        <li>Rate: up to 500 results per request</li>
+        <li>Webhook delivery for async bulk jobs</li>
+        <li>Full OpenAPI spec &amp; Postman collection</li>
+        <li>Node.js and Python SDKs included</li>
+      </ul>
+      <a href="docs.html" class="btn btn-primary">Read the docs →</a>
+    </div>
+    <div class="code-window">
+      <div class="code-window-bar">
+        <span class="d1"></span><span class="d2"></span><span class="d3"></span>
+        <span class="fname">scrape_leads.js</span>
       </div>
-      <div class="data-preview">
-        <div class="data-preview-header">
-          <span>● Example request</span>
-        </div>
-        <pre>
-<span class="json-key">curl</span> -X GET \
-  <span class="json-str">"https://api.mapleads.io/v1/search</span>
-  <span class="json-str">?query=restaurants</span>
-  <span class="json-str">&location=Berlin%2C+Germany</span>
-  <span class="json-str">&filter=no_website</span>
-  <span class="json-str">&limit=100"</span> \
-  -H <span class="json-str">"Authorization: Bearer YOUR_API_KEY"</span>
+      <div class="code-body"><span class="kw">const</span> <span class="fn">MapLeads</span> = <span class="fn">require</span>(<span class="str">'mapleads'</span>);
+<span class="kw">const</span> client = <span class="kw">new</span> <span class="fn">MapLeads</span>(<span class="str">'YOUR_API_KEY'</span>);
 
-<span class="json-key"># Response</span>
-{
-  <span class="json-key">"status"</span>: <span class="json-str">"success"</span>,
-  <span class="json-key">"total"</span>: <span class="json-num">2847</span>,
-  <span class="json-key">"results"</span>: [ ... ]
-}</pre>
-      </div>
+<span class="cmt">// Find restaurants with no website in Paris</span>
+<span class="kw">const</span> leads = <span class="kw">await</span> client.<span class="fn">search</span>({
+  query:    <span class="str">'restaurants'</span>,
+  location: <span class="str">'Paris, France'</span>,
+  filter:   <span class="str">'no_website'</span>,
+  limit:    <span class="num">500</span>
+});
+
+<span class="cmt">// Export to CSV automatically</span>
+<span class="kw">await</span> client.<span class="fn">export</span>(leads, {
+  format: <span class="str">'csv'</span>,
+  file:   <span class="str">'paris-leads.csv'</span>
+});
+
+console.<span class="fn">log</span>(<span class="str">`Found <span class="num">${leads.total}</span> leads`</span>);
+<span class="cmt">// → Found 3,241 leads</span></div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing">
-  <div class="section-inner">
-    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Pricing</span></div>
-    <h2>Simple pricing, no surprises</h2>
-    <p class="section-sub">Start free. Scale as your business grows. Cancel anytime.</p>
+<section class="pricing">
+  <div class="pricing-inner">
+    <div class="pricing-head">
+      <div class="eyebrow">Pricing</div>
+      <h2>Start free. Scale when you're ready.</h2>
+      <p>No hidden fees, no locked features. Cancel anytime.</p>
+    </div>
     <div class="pricing-grid">
-      <div class="price-card">
+      <div class="plan">
         <div class="plan-name">Starter</div>
-        <div class="plan-price"><sup>$</sup>0</div>
+        <div class="plan-price"><span class="cur">$</span><span class="amt">0</span></div>
         <div class="plan-period">Forever free</div>
-        <ul class="plan-features">
+        <ul class="plan-feats">
           <li>500 results / month</li>
           <li>5 countries</li>
           <li>CSV export</li>
           <li>Phone + address data</li>
-          <li>Website status filter</li>
+          <li>No-website filter</li>
           <li>Community support</li>
         </ul>
-        <button class="btn-secondary" style="width: 100%; justify-content: center; display: flex;" onclick="openModal('signup')">Get started free</button>
+        <button class="btn btn-outline btn-full" onclick="openModal('signup')">Get started free</button>
       </div>
-      <div class="price-card featured">
-        <div class="featured-badge">MOST POPULAR</div>
+
+      <div class="plan pop">
+        <div class="plan-badge">Most popular</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-price"><sup>$</sup>49</div>
-        <div class="plan-period">per month, billed monthly</div>
-        <ul class="plan-features">
+        <div class="plan-price"><span class="cur">$</span><span class="amt">49</span></div>
+        <div class="plan-period">per month · cancel anytime</div>
+        <ul class="plan-feats">
           <li>25,000 results / month</li>
-          <li>All 30+ countries</li>
+          <li>All 40+ countries</li>
           <li>CSV + JSON export</li>
           <li>Full business details</li>
           <li>REST API access</li>
+          <li>Email discovery</li>
           <li>Webhook notifications</li>
-          <li>Email support (24h)</li>
+          <li>24h email support</li>
         </ul>
-        <button class="btn-primary" style="width: 100%; justify-content: center; display: flex;" onclick="openModal('signup')">Start 7-day free trial</button>
+        <button class="btn btn-blue btn-full" onclick="openModal('signup')">Start 7-day free trial →</button>
       </div>
-      <div class="price-card">
+
+      <div class="plan">
         <div class="plan-name">Agency</div>
-        <div class="plan-price"><sup>$</sup>199</div>
-        <div class="plan-period">per month, billed monthly</div>
-        <ul class="plan-features">
+        <div class="plan-price"><span class="cur">$</span><span class="amt">199</span></div>
+        <div class="plan-period">per month · cancel anytime</div>
+        <ul class="plan-feats">
           <li>250,000 results / month</li>
-          <li>All 30+ countries</li>
+          <li>All 40+ countries</li>
           <li>Bulk job scheduler</li>
-          <li>Priority API rate limits</li>
+          <li>Priority API limits</li>
           <li>White-label export</li>
-          <li>Sub-accounts (5 seats)</li>
+          <li>5 sub-accounts / seats</li>
           <li>Dedicated support</li>
         </ul>
-        <button class="btn-secondary" style="width: 100%; justify-content: center; display: flex;" onclick="openModal('contact')">Contact sales</button>
+        <button class="btn btn-outline btn-full" onclick="openModal('contact')">Contact sales</button>
       </div>
     </div>
   </div>
@@ -1099,41 +720,43 @@
 <div class="divider"></div>
 
 <!-- TESTIMONIALS -->
-<section>
-  <div class="section-inner">
-    <div class="section-eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">What people say</span></div>
-    <h2>Used by agencies, freelancers,<br>and SaaS builders worldwide</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"MapLeads saved us 40 hours per month on prospect research. The phone number accuracy is incredible—actually calls that go through."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">AC</div>
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-head">
+      <div class="eyebrow">What people say</div>
+      <h2>Agencies, freelancers &amp; SaaS teams love MapLeads</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"MapLeads saved us 40 hours a month on prospect research. The no-website filter alone is worth the subscription — we've never had such warm leads."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AC</div>
           <div>
-            <div class="reviewer-name">Alex Chen</div>
-            <div class="reviewer-role">Growth Lead, Cold Outreach Pro</div>
+            <div class="testi-name">Alex Chen</div>
+            <div class="testi-role">Growth Lead, Cold Outreach Pro</div>
           </div>
         </div>
       </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"We integrated MapLeads into our CRM in one afternoon. The API documentation is thorough and the support team actually responds."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">SM</div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"We integrated MapLeads into our CRM in one afternoon. The API is clean, the docs are thorough, and the support team actually responds within hours."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SM</div>
           <div>
-            <div class="reviewer-name">Sarah Martinez</div>
-            <div class="reviewer-role">CTO, WebsiteFlow Inc</div>
+            <div class="testi-name">Sarah Martinez</div>
+            <div class="testi-role">CTO, WebsiteFlow Inc</div>
           </div>
         </div>
       </div>
-      <div class="testimonial-card">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">"The 'no website' filter is a game-changer. We've landed 12 new clients just by targeting businesses that don't have an online presence yet."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">JK</div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"12 new clients in 30 days targeting businesses with no website. The data quality is insane — 99% of the numbers were working on first call."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JK</div>
           <div>
-            <div class="reviewer-name">James Kim</div>
-            <div class="reviewer-role">Founder, Digital Agency Co</div>
+            <div class="testi-name">James Kim</div>
+            <div class="testi-role">Founder, Digital Agency Co</div>
           </div>
         </div>
       </div>
@@ -1141,11 +764,12 @@
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
+<!-- CTA BANNER -->
+<section class="cta-banner">
   <h2>Ready to find your next 1,000 leads?</h2>
-  <p>Start free. No credit card required. Scrape your first batch of businesses in under 5 minutes.</p>
-  <button class="btn-primary" onclick="openModal('signup')">Get started now →</button>
+  <p>Start free today. No credit card. First scrape in under 5 minutes.</p>
+  <button class="btn btn-blue" onclick="openModal('signup')" style="font-size:16px;padding:16px 40px;">Get started free →</button>
+  <div class="cta-sub">Free plan includes 500 results/month forever</div>
 </section>
 
 <!-- FOOTER -->
@@ -1153,178 +777,151 @@
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="#" class="logo">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg>
+        <a href="index.html" class="footer-logo">
+          <div class="nav-logo-icon" style="background:var(--blue);">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
           </div>
-          MapLeads
+          MapLeads.io
         </a>
-        <p>Find businesses without websites across 30+ countries. Scrape Google Maps data in real-time with 99%+ accuracy.</p>
+        <p>Find offline businesses ready for digital services. Scrape Google Maps across 40+ countries with 99% accuracy.</p>
       </div>
       <div class="footer-col">
         <h5>Product</h5>
         <ul>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#api">API docs</a></li>
-          <li><a href="javascript:openModal('request')">Request feature</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="docs.html">API Docs</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Request feature</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Company</h5>
         <ul>
-          <li><a href="javascript:alert('About page')">About</a></li>
-          <li><a href="javascript:alert('Blog page')">Blog</a></li>
-          <li><a href="javascript:openModal('contact')">Contact</a></li>
-          <li><a href="javascript:alert('Careers - Coming soon!')">Careers</a></li>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="admin.html">Admin</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
         <ul>
-          <li><a href="javascript:alert('Terms of Service')">Terms</a></li>
-          <li><a href="javascript:alert('Privacy Policy')">Privacy</a></li>
-          <li><a href="javascript:alert('Cookie Policy')">Cookies</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 MapLeads. All rights reserved.</p>
+      <span>&copy; 2026 MapLeads.io — All rights reserved.</span>
+      <span>Made for developers who close deals.</span>
     </div>
   </div>
 </footer>
 
 <!-- MODALS -->
-<div id="signupModal" class="modal" onclick="closeModalOnBackdrop(event, 'signup')">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Get started with MapLeads</h3>
-      <button class="close-btn" onclick="closeModal('signup')">&times;</button>
+<div id="signupModal" class="modal" onclick="bgClose(event,'signup')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h3>Create your free account</h3>
+      <button class="modal-close" onclick="closeModal('signup')">✕</button>
     </div>
     <form onsubmit="handleSignup(event)">
-      <div class="form-group">
-        <label>Full name</label>
-        <input type="text" placeholder="Your name" required>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" required>
-      </div>
-      <div class="form-group">
-        <label>Company (optional)</label>
-        <input type="text" placeholder="Your company">
-      </div>
-      <button type="submit" class="form-submit">Create free account</button>
-      <div class="success-message" id="signupSuccess">✓ Check your email to verify your account!</div>
+      <div class="field"><label>Full name</label><input type="text" placeholder="Your name" required /></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@company.com" required /></div>
+      <div class="field"><label>Company (optional)</label><input type="text" placeholder="Your company" /></div>
+      <button type="submit" class="form-submit">Create free account →</button>
+      <div class="toast" id="signupToast">✓ Account created! Check your email to verify.</div>
     </form>
   </div>
 </div>
 
-<div id="contactModal" class="modal" onclick="closeModalOnBackdrop(event, 'contact')">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Contact us</h3>
-      <button class="close-btn" onclick="closeModal('contact')">&times;</button>
+<div id="contactModal" class="modal" onclick="bgClose(event,'contact')">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <h3>Contact sales</h3>
+      <button class="modal-close" onclick="closeModal('contact')">✕</button>
     </div>
     <form onsubmit="handleContact(event)">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" placeholder="Your name" required>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" required>
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea placeholder="Tell us more..." required></textarea>
-      </div>
-      <button type="submit" class="form-submit">Send message</button>
-      <div class="success-message" id="contactSuccess">✓ Message sent! We'll get back to you soon.</div>
+      <div class="field"><label>Name</label><input type="text" placeholder="Your name" required /></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@company.com" required /></div>
+      <div class="field"><label>Message</label><textarea placeholder="Tell us about your use case..." required></textarea></div>
+      <button type="submit" class="form-submit">Send message →</button>
+      <div class="toast" id="contactToast">✓ Sent! We'll be in touch within 24 hours.</div>
     </form>
   </div>
 </div>
 
-<div id="requestModal" class="modal" onclick="closeModalOnBackdrop(event, 'request')">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Request a country</h3>
-      <button class="close-btn" onclick="closeModal('request')">&times;</button>
-    </div>
-    <form onsubmit="handleRequest(event)">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="you@example.com" required>
-      </div>
-      <div class="form-group">
-        <label>Country name</label>
-        <input type="text" placeholder="e.g., Poland, Thailand" required>
-      </div>
-      <div class="form-group">
-        <label>Industry focus (optional)</label>
-        <input type="text" placeholder="e.g., restaurants, plumbers">
-      </div>
-      <button type="submit" class="form-submit">Submit request</button>
-      <div class="success-message" id="requestSuccess">✓ Thanks! We'll prioritize your request.</div>
-    </form>
-  </div>
-</div>
-
+<script src="main.js"></script>
 <script>
-  function openModal(modalType) {
-    document.getElementById(modalType + 'Modal').classList.add('show');
+  // Demo interactions
+  const demoBusinesses = [
+    { name:'Gasthaus Zur Linde',   cat:'German Restaurant · Berlin Mitte',  phone:'+49 30 2456 7890' },
+    { name:'Pizzeria Da Marco',    cat:'Italian · Prenzlauer Berg',          phone:'+49 30 4411 2233' },
+    { name:'Café Morgenrot',       cat:'Café · Friedrichshain',             phone:'+49 30 9987 0044' },
+    { name:'Tandoori Palace',      cat:'Indian Restaurant · Kreuzberg',      phone:'+49 30 5523 1100' },
+    { name:'Thai Garden Berlin',   cat:'Thai · Charlottenburg',              phone:'+49 30 3312 8877' },
+  ];
+  const parisBusinesses = [
+    { name:'Brasserie Le Marché',  cat:'French Brasserie · Le Marais',       phone:'+33 1 42 78 55 21' },
+    { name:'Trattoria Venezia',    cat:'Italian · Saint-Germain',            phone:'+33 1 45 67 89 10' },
+    { name:'Sushi Noguchi',        cat:'Japanese · 8th arrondissement',      phone:'+33 1 56 88 22 34' },
+  ];
+  const londonBusinesses = [
+    { name:"Bishop's Pub & Grill", cat:'British Pub · Shoreditch',           phone:'+44 20 7213 4456' },
+    { name:'Masala Hut',           cat:'Indian Takeaway · Brixton',          phone:'+44 20 8452 7891' },
+    { name:'The Green Brunch',     cat:'Café · Notting Hill',                phone:'+44 20 7727 3310' },
+  ];
+
+  function runLiveDemo() {
+    const val = document.getElementById('demoInput').value.toLowerCase();
+    let list = demoBusinesses;
+    if (val.includes('paris') || val.includes('france')) list = parisBusinesses;
+    if (val.includes('london') || val.includes('uk')) list = londonBusinesses;
+
+    const container = document.getElementById('demoResults');
+    container.innerHTML = '<div style="text-align:center;padding:20px;font-size:13px;color:var(--gray-500);">⏳ Scraping Google Maps…</div>';
+
+    setTimeout(() => {
+      container.innerHTML = list.slice(0,3).map(b => `
+        <div class="demo-result">
+          <div><div class="dr-name">${b.name}</div><div class="dr-cat">${b.cat}</div></div>
+          <div><div class="dr-phone">${b.phone}</div><div class="dr-no-site">NO WEBSITE</div></div>
+        </div>`).join('');
+      const total = Math.floor(Math.random() * 3000) + 800;
+      document.getElementById('demoCount').innerHTML = `Showing 3 of <strong>${total.toLocaleString()}</strong> results · Export to CSV`;
+    }, 900);
+  }
+
+  function toggleChip(el) { el.classList.toggle('on'); }
+
+  function openModal(id) {
+    document.getElementById(id+'Modal').classList.add('show');
     document.body.style.overflow = 'hidden';
   }
-
-  function closeModal(modalType) {
-    document.getElementById(modalType + 'Modal').classList.remove('show');
-    document.body.style.overflow = 'auto';
-    const successMsg = document.getElementById(modalType + 'Success');
-    if (successMsg) successMsg.classList.remove('show');
+  function closeModal(id) {
+    document.getElementById(id+'Modal').classList.remove('show');
+    document.body.style.overflow = '';
   }
-
-  function closeModalOnBackdrop(event, modalType) {
-    if (event.target.id === modalType + 'Modal') {
-      closeModal(modalType);
-    }
-  }
+  function bgClose(e,id) { if(e.target.id === id+'Modal') closeModal(id); }
 
   function handleSignup(e) {
     e.preventDefault();
-    document.getElementById('signupSuccess').classList.add('show');
-    setTimeout(() => closeModal('signup'), 2000);
+    document.getElementById('signupToast').classList.add('show');
+    setTimeout(() => closeModal('signup'), 2200);
   }
-
   function handleContact(e) {
     e.preventDefault();
-    document.getElementById('contactSuccess').classList.add('show');
-    setTimeout(() => closeModal('contact'), 2000);
+    document.getElementById('contactToast').classList.add('show');
+    setTimeout(() => closeModal('contact'), 2200);
   }
 
-  function handleRequest(e) {
-    e.preventDefault();
-    document.getElementById('requestSuccess').classList.add('show');
-    setTimeout(() => closeModal('request'), 2000);
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
   }
 
-  function toggleFilter(elem) {
-    elem.classList.toggle('active');
-  }
-
-  function runDemo() {
-    alert('Demo! In production, this would trigger a real scrape job.');
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (href !== '#') {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeModal('signup'); closeModal('contact'); }
   });
 </script>
-
 </body>
 </html>
